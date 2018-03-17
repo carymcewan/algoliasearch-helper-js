@@ -5,10 +5,10 @@ var algoliasearchHelper = require('../../../index');
 var requestBuilder = require('../../../src/requestBuilder');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('Tag filters: operations on tags list', function(t) {
+test('Tag filters: operations on tags list', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
 
   helper.addTag('tag').addTag('tag2');
@@ -20,7 +20,7 @@ test('Tag filters: operations on tags list', function(t) {
   t.end();
 });
 
-test('Tags filters: advanced query', function(t) {
+test('Tags filters: advanced query', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
 
   var complexQuery = '(sea, city), romantic, -mountain';
@@ -32,7 +32,7 @@ test('Tags filters: advanced query', function(t) {
   t.end();
 });
 
-test('Tags filters: switching between advanced and simple API should be forbidden without clearing the refinements first', function(t) {
+test('Tags filters: switching between advanced and simple API should be forbidden without clearing the refinements first', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
 
   helper.addTag('tag').addTag('tag2');

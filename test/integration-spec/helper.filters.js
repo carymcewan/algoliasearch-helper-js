@@ -13,39 +13,31 @@ if (!utils.shouldRun) {
   test = test.skip;
 }
 
-test('[INT][FILTERS] Should retrieve different values for multi facetted records', function(t) {
-  var indexName = '_travis-algoliasearch-helper-js-' +
-    (process.env.TRAVIS_BUILD_NUMBER || 'DEV') +
-    'helper_refinements' + random(0, 5000);
+test('[INT][FILTERS] Should retrieve different values for multi facetted records', function (t) {
+  var indexName = '_travis-algoliasearch-helper-js-' + (process.env.TRAVIS_BUILD_NUMBER || 'DEV') + 'helper_refinements' + random(0, 5000);
 
-  setup(indexName, function(client, index) {
-    return index.addObjects([
-      {facet: ['f1', 'f2']},
-      {facet: ['f1', 'f3']},
-      {facet: ['f2', 'f3']}
-    ])
-      .then(function() {
-        return index.setSettings({
-          attributesToIndex: ['facet'],
-          attributesForFaceting: ['facet']
-        });
-      })
-      .then(function(content) {
-        return index.waitTask(content.taskID);
-      }).then(function() {
-        return client;
+  setup(indexName, function (client, index) {
+    return index.addObjects([{ facet: ['f1', 'f2'] }, { facet: ['f1', 'f3'] }, { facet: ['f2', 'f3'] }]).then(function () {
+      return index.setSettings({
+        attributesToIndex: ['facet'],
+        attributesForFaceting: ['facet']
       });
-  }).then(function(client) {
+    }).then(function (content) {
+      return index.waitTask(content.taskID);
+    }).then(function () {
+      return client;
+    });
+  }).then(function (client) {
     var helper = algoliasearchHelper(client, indexName, {
       facets: ['facet']
     });
 
     var calls = 0;
-    helper.on('error', function(err) {
+    helper.on('error', function (err) {
       t.fail(err);
       t.end();
     });
-    helper.on('result', function(content) {
+    helper.on('result', function (content) {
       calls++;
 
       if (calls === 1) {
@@ -89,6 +81,5 @@ test('[INT][FILTERS] Should retrieve different values for multi facetted records
     });
 
     helper.addRefine('facet', 'f1').search();
-  })
-    .then(null, bind(t.error, t));
+  }).then(null, bind(t.error, t));
 });

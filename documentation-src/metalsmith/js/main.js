@@ -1,16 +1,26 @@
-import sidebar from './sidebar.js';
-import * as algolia from 'algolia-frontend-components/javascripts'
+'use strict';
 
-window.addEventListener('load',() => {
-  var header = new algolia.communityHeader()
-})
+var _sidebar = require('./sidebar.js');
 
-var container = document.querySelector('.documentation-container')
+var _sidebar2 = _interopRequireDefault(_sidebar);
+
+var _javascripts = require('algolia-frontend-components/javascripts');
+
+var algolia = _interopRequireWildcard(_javascripts);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+window.addEventListener('load', function () {
+  var header = new algolia.communityHeader();
+});
+
+var container = document.querySelector('.documentation-container');
 var sidebarContainer = document.querySelector('.sidebar');
 
-
-if(container && sidebar) {
-  sidebar({
+if (container && _sidebar2.default) {
+  (0, _sidebar2.default)({
     headersContainer: container,
     sidebarContainer: sidebarContainer,
     headerStartLevel: 2

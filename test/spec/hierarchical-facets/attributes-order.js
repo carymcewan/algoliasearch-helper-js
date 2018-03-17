@@ -4,7 +4,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: attributes order', function(t) {
+test('hierarchical facets: attributes order', function (t) {
   var algoliasearch = require('algoliasearch');
   var sinon = require('sinon');
 
@@ -29,26 +29,26 @@ test('hierarchical facets: attributes order', function(t) {
     'results': [{
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 3,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 20,
       'facets': {
         // /!\ Note that lvl1 comes *before* lvl0 here
-        'categories.lvl1': {'beers > IPA': 6, 'beers > 1664': 3},
-        'categories.lvl0': {'beers': 9}
+        'categories.lvl1': { 'beers > IPA': 6, 'beers > 1664': 3 },
+        'categories.lvl0': { 'beers': 9 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 9, 'fruits': 5, 'sales': 20}
+        'categories.lvl0': { 'beers': 9, 'fruits': 5, 'sales': 20 }
       }
     }]
   };
@@ -94,7 +94,7 @@ test('hierarchical facets: attributes order', function(t) {
   search.yieldsAsync(null, algoliaResponse);
   helper.setQuery('a').search();
 
-  helper.once('result', function(content) {
+  helper.once('result', function (content) {
     t.deepEqual(content.hierarchicalFacets, expectedHelperResponse);
     t.deepEqual(content.getFacetByName('categories'), expectedHelperResponse[0]);
 

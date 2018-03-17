@@ -2,7 +2,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: using sortBy', function(t) {
+test('hierarchical facets: using sortBy', function (t) {
   var algoliasearch = require('algoliasearch');
 
   var sinon = require('sinon');
@@ -30,27 +30,27 @@ test('hierarchical facets: using sortBy', function(t) {
     'results': [{
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 20,
       'facets': {
-        'categories.lvl0': {'beers': 1},
-        'categories.lvl1': {'beers > IPA': 1},
-        'categories.lvl2': {'beers > IPA > Flying dog': 1}
+        'categories.lvl0': { 'beers': 1 },
+        'categories.lvl1': { 'beers > IPA': 1 },
+        'categories.lvl2': { 'beers > IPA > Flying dog': 1 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 5},
-        'categories.lvl1': {'beers > IPA': 5},
+        'categories.lvl0': { 'beers': 5 },
+        'categories.lvl1': { 'beers > IPA': 5 },
         'categories.lvl2': {
           'beers > IPA > Flying dog': 1,
           'beers > IPA > Anchor steam': 1,
@@ -60,13 +60,13 @@ test('hierarchical facets: using sortBy', function(t) {
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 5}
+        'categories.lvl0': { 'beers': 5 }
       }
     }]
   };
@@ -111,7 +111,7 @@ test('hierarchical facets: using sortBy', function(t) {
 
   search.yieldsAsync(null, algoliaResponse);
   helper.setQuery('a').search();
-  helper.once('result', function(content) {
+  helper.once('result', function (content) {
     t.deepEqual(content.hierarchicalFacets, expectedHelperResponse);
     t.end();
   });

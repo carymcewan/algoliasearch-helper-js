@@ -12,7 +12,7 @@ function makeFakeClient() {
   return client;
 }
 
-test('setting the agent once', function(t) {
+test('setting the agent once', function (t) {
   var client = algoliasearch('what', 'wait', {});
   var originalUA = client._ua;
   algoliaSearchHelper(client, 'IndexName', {});
@@ -23,7 +23,7 @@ test('setting the agent once', function(t) {
   t.end();
 });
 
-test('getClient / setClient', function(t) {
+test('getClient / setClient', function (t) {
   var client0 = makeFakeClient();
   var originalUA = client0._ua;
   var helper = algoliaSearchHelper(client0, 'IndexName', {});

@@ -3,7 +3,7 @@
 var test = require('tape');
 var SearchParameters = require('../../../src/SearchParameters');
 
-test('_parseNumbers should convert to number all specified root keys (that are parseable)', function(t) {
+test('_parseNumbers should convert to number all specified root keys (that are parseable)', function (t) {
   var partialState = {
     aroundPrecision: '42',
     aroundRadius: '42',
@@ -36,7 +36,7 @@ test('_parseNumbers should convert to number all specified root keys (that are p
   t.end();
 });
 
-test('_parseNumbers should not convert undefined to NaN', function(t) {
+test('_parseNumbers should not convert undefined to NaN', function (t) {
   var partialState = {
     aroundPrecision: undefined
   };
@@ -47,7 +47,7 @@ test('_parseNumbers should not convert undefined to NaN', function(t) {
   t.end();
 });
 
-test('_parseNumbers should not convert insideBoundingBox if it\'s a string', function(t) {
+test('_parseNumbers should not convert insideBoundingBox if it\'s a string', function (t) {
   var partialState = {
     insideBoundingBox: '5,4,5,4'
   };
@@ -58,7 +58,7 @@ test('_parseNumbers should not convert insideBoundingBox if it\'s a string', fun
   t.end();
 });
 
-test('_parseNumbers should not convert unparseable strings', function(t) {
+test('_parseNumbers should not convert unparseable strings', function (t) {
   var partialState = {
     aroundRadius: 'all'
   };
@@ -69,7 +69,7 @@ test('_parseNumbers should not convert unparseable strings', function(t) {
   t.end();
 });
 
-test('_parseNumbers should convert numericRefinements values', function(t) {
+test('_parseNumbers should convert numericRefinements values', function (t) {
   var partialState = {
     numericRefinements: {
       foo: {
@@ -86,22 +86,18 @@ test('_parseNumbers should convert numericRefinements values', function(t) {
   t.end();
 });
 
-test('_parseNumbers should convert nested numericRefinements values', function(t) {
+test('_parseNumbers should convert nested numericRefinements values', function (t) {
   var partialState = {
     numericRefinements: {
       foo: {
-        '>=': [
-          ['4.8'], '15.16'
-        ],
+        '>=': [['4.8'], '15.16'],
         '=': ['23.42']
       }
     }
   };
   var actual = SearchParameters._parseNumbers(partialState);
 
-  t.deepEqual(actual.numericRefinements.foo['>='], [
-    [4.8], 15.16
-  ], 'should convert foo >=');
+  t.deepEqual(actual.numericRefinements.foo['>='], [[4.8], 15.16], 'should convert foo >=');
   t.deepEqual(actual.numericRefinements.foo['='], [23.42], 'should convert foo =');
 
   t.end();

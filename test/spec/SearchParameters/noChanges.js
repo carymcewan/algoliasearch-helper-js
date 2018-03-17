@@ -4,7 +4,7 @@ var test = require('tape');
 
 var SearchParameters = require('../../../src/SearchParameters');
 
-test('[No changes] setHitsPerPage', function(t) {
+test('[No changes] setHitsPerPage', function (t) {
   var state = SearchParameters.make({
     hitsPerPage: 2
   });
@@ -14,7 +14,7 @@ test('[No changes] setHitsPerPage', function(t) {
   t.end();
 });
 
-test('[No changes] setTypoTolerance', function(t) {
+test('[No changes] setTypoTolerance', function (t) {
   var state = SearchParameters.make({
     typoTolerance: true
   });
@@ -24,7 +24,7 @@ test('[No changes] setTypoTolerance', function(t) {
   t.end();
 });
 
-test('[No changes] setPage', function(t) {
+test('[No changes] setPage', function (t) {
   var state = SearchParameters.make({
     page: 2
   });
@@ -34,7 +34,7 @@ test('[No changes] setPage', function(t) {
   t.end();
 });
 
-test('[No changes] setQuery', function(t) {
+test('[No changes] setQuery', function (t) {
   var state = SearchParameters.make({
     query: 'query'
   });
@@ -44,7 +44,7 @@ test('[No changes] setQuery', function(t) {
   t.end();
 });
 
-test('[No changes] addFacet', function(t) {
+test('[No changes] addFacet', function (t) {
   var state = SearchParameters.make({}).addFacet('facet');
 
   t.equal(state.addFacet('facet'), state, 'addFacet should return the same instance');
@@ -52,7 +52,7 @@ test('[No changes] addFacet', function(t) {
   t.end();
 });
 
-test('[No changes] removeFacet', function(t) {
+test('[No changes] removeFacet', function (t) {
   var state = SearchParameters.make({});
 
   t.equal(state.removeFacet('facet'), state, 'removeFacet should return the same instance');
@@ -60,7 +60,7 @@ test('[No changes] removeFacet', function(t) {
   t.end();
 });
 
-test('[No changes] addDisjunctiveFacet', function(t) {
+test('[No changes] addDisjunctiveFacet', function (t) {
   var state = SearchParameters.make({}).addDisjunctiveFacet('facet');
 
   t.equal(state.addDisjunctiveFacet('facet'), state, 'addDisjunctiveFacet should return the same instance');
@@ -68,7 +68,7 @@ test('[No changes] addDisjunctiveFacet', function(t) {
   t.end();
 });
 
-test('[No changes] removeDisjunctiveFacet', function(t) {
+test('[No changes] removeDisjunctiveFacet', function (t) {
   var state = SearchParameters.make({});
 
   t.equal(state.removeDisjunctiveFacet('facet'), state, 'removeDisjunctiveFacet should return the same instance');
@@ -76,7 +76,7 @@ test('[No changes] removeDisjunctiveFacet', function(t) {
   t.end();
 });
 
-test('[No changes] removeHierarchicalFacet', function(t) {
+test('[No changes] removeHierarchicalFacet', function (t) {
   var state = SearchParameters.make({});
 
   t.equal(state.removeHierarchicalFacet('facet'), state, 'removeHierarchicalFacet should return the same instance');
@@ -84,7 +84,7 @@ test('[No changes] removeHierarchicalFacet', function(t) {
   t.end();
 });
 
-test('[No changes] addTagRefinement', function(t) {
+test('[No changes] addTagRefinement', function (t) {
   var state = SearchParameters.make({}).addTagRefinement('tag');
 
   t.equal(state.addTagRefinement('tag'), state, 'addTagRefinement should return the same instance');
@@ -92,7 +92,7 @@ test('[No changes] addTagRefinement', function(t) {
   t.end();
 });
 
-test('[No changes] clearTags', function(t) {
+test('[No changes] clearTags', function (t) {
   var state = SearchParameters.make({
     query: 'query'
   });
@@ -102,7 +102,7 @@ test('[No changes] clearTags', function(t) {
   t.end();
 });
 
-test('[No changes] addDisjunctiveFacetRefinement', function(t) {
+test('[No changes] addDisjunctiveFacetRefinement', function (t) {
   var state = SearchParameters.make({
     disjunctiveFacets: ['facet']
   }).addDisjunctiveFacetRefinement('facet', 'value');
@@ -112,7 +112,7 @@ test('[No changes] addDisjunctiveFacetRefinement', function(t) {
   t.end();
 });
 
-test('[No changes] removeDisjunctiveFacetRefinement', function(t) {
+test('[No changes] removeDisjunctiveFacetRefinement', function (t) {
   var state = SearchParameters.make({
     disjunctiveFacets: ['facet']
   });
@@ -122,7 +122,7 @@ test('[No changes] removeDisjunctiveFacetRefinement', function(t) {
   t.end();
 });
 
-test('[No changes] addFacetRefinement', function(t) {
+test('[No changes] addFacetRefinement', function (t) {
   var state = SearchParameters.make({
     facets: ['facet']
   }).addFacetRefinement('facet', 'value');
@@ -132,7 +132,7 @@ test('[No changes] addFacetRefinement', function(t) {
   t.end();
 });
 
-test('[No changes] removeDisjunctiveFacetRefinement', function(t) {
+test('[No changes] removeDisjunctiveFacetRefinement', function (t) {
   var state = SearchParameters.make({
     disjunctiveFacets: ['facet']
   });
@@ -142,7 +142,7 @@ test('[No changes] removeDisjunctiveFacetRefinement', function(t) {
   t.end();
 });
 
-test('[No changes] addNumericRefinement', function(t) {
+test('[No changes] addNumericRefinement', function (t) {
   var state = SearchParameters.make({}).addNumericRefinement('attribute', '>', 0);
 
   t.equal(state.addNumericRefinement('attribute', '>', 0), state, 'addNumericRefinement should return the same instance');
@@ -150,7 +150,7 @@ test('[No changes] addNumericRefinement', function(t) {
   t.end();
 });
 
-test('[No changes] removeNumericRefinement', function(t) {
+test('[No changes] removeNumericRefinement', function (t) {
   var state = SearchParameters.make({});
 
   t.equal(state.removeNumericRefinement('attribute', '>'), state, 'removeNumericRefinement should return the same instance');
@@ -158,7 +158,7 @@ test('[No changes] removeNumericRefinement', function(t) {
   t.end();
 });
 
-test('[No changes] setQueryParameter', function(t) {
+test('[No changes] setQueryParameter', function (t) {
   var state = SearchParameters.make({
     minWordSizefor1Typo: 50
   });

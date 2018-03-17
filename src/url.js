@@ -75,22 +75,19 @@ function sortQueryStringValues(prefixRegexp, invertedMapping, a, b) {
  * @return {object} partial search parameters object (same properties than in the
  * SearchParameters but not exhaustive)
  */
-exports.getStateFromQueryString = function(queryString, options) {
+exports.getStateFromQueryString = function (queryString, options) {
   var prefixForParameters = options && options.prefix || '';
   var mapping = options && options.mapping || {};
   var invertedMapping = invert(mapping);
 
   var partialStateWithPrefix = qs.parse(queryString);
   var prefixRegexp = new RegExp('^' + prefixForParameters);
-  var partialState = mapKeys(
-    partialStateWithPrefix,
-    function(v, k) {
-      var hasPrefix = prefixForParameters && prefixRegexp.test(k);
-      var unprefixedKey = hasPrefix ? k.replace(prefixRegexp, '') : k;
-      var decodedKey = shortener.decode(invertedMapping[unprefixedKey] || unprefixedKey);
-      return decodedKey || unprefixedKey;
-    }
-  );
+  var partialState = mapKeys(partialStateWithPrefix, function (v, k) {
+    var hasPrefix = prefixForParameters && prefixRegexp.test(k);
+    var unprefixedKey = hasPrefix ? k.replace(prefixRegexp, '') : k;
+    var decodedKey = shortener.decode(invertedMapping[unprefixedKey] || unprefixedKey);
+    return decodedKey || unprefixedKey;
+  });
 
   var partialStateWithParsedNumbers = SearchParameters._parseNumbers(partialState);
 
@@ -107,7 +104,7 @@ exports.getStateFromQueryString = function(queryString, options) {
  * @return {object} the object containing the parsed configuration that doesn't
  * to the helper
  */
-exports.getUnrecognizedParametersInQueryString = function(queryString, options) {
+exports.getUnrecognizedParametersInQueryString = function (queryString, options) {
   var prefixForParameters = options && options.prefix;
   var mapping = options && options.mapping || {};
   var invertedMapping = invert(mapping);
@@ -116,11 +113,11 @@ exports.getUnrecognizedParametersInQueryString = function(queryString, options) 
   var config = qs.parse(queryString);
   if (prefixForParameters) {
     var prefixRegexp = new RegExp('^' + prefixForParameters);
-    forEach(config, function(v, key) {
+    forEach(config, function (v, key) {
       if (!prefixRegexp.test(key)) foreignConfig[key] = v;
     });
   } else {
-    forEach(config, function(v, key) {
+    forEach(config, function (v, key) {
       if (!shortener.decode(invertedMapping[key] || key)) foreignConfig[key] = v;
     });
   }
@@ -141,7 +138,7 @@ exports.getUnrecognizedParametersInQueryString = function(queryString, options) 
  *  Default to false for legacy reasons ()
  * @return {string} the query string
  */
-exports.getQueryStringFromState = function(state, options) {
+exports.getQueryStringFromState = function (state, options) {
   var moreAttributes = options && options.moreAttributes;
   var prefixForParameters = options && options.prefix || '';
   var mapping = options && options.mapping || {};
@@ -150,22 +147,19 @@ exports.getQueryStringFromState = function(state, options) {
 
   var stateForUrl = safe ? state : recursiveEncode(state);
 
-  var encodedState = mapKeys(
-    stateForUrl,
-    function(v, k) {
-      var shortK = shortener.encode(k);
-      return prefixForParameters + (mapping[shortK] || shortK);
-    }
-  );
+  var encodedState = mapKeys(stateForUrl, function (v, k) {
+    var shortK = shortener.encode(k);
+    return prefixForParameters + (mapping[shortK] || shortK);
+  });
 
   var prefixRegexp = prefixForParameters === '' ? null : new RegExp('^' + prefixForParameters);
   var sort = bind(sortQueryStringValues, null, prefixRegexp, invertedMapping);
   if (!isEmpty(moreAttributes)) {
-    var stateQs = qs.stringify(encodedState, {encode: safe, sort: sort});
-    var moreQs = qs.stringify(moreAttributes, {encode: safe});
+    var stateQs = qs.stringify(encodedState, { encode: safe, sort: sort });
+    var moreQs = qs.stringify(moreAttributes, { encode: safe });
     if (!stateQs) return moreQs;
     return stateQs + '&' + moreQs;
   }
 
-  return qs.stringify(encodedState, {encode: safe, sort: sort});
+  return qs.stringify(encodedState, { encode: safe, sort: sort });
 };

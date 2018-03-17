@@ -4,16 +4,15 @@ var test = require('tape');
 
 var algoliasearchHelper = require('../../../index');
 
-test('searchForFacetValues should search for facetValues with the current state', function(t) {
+test('searchForFacetValues should search for facetValues with the current state', function (t) {
   var lastParameters = null;
   var fakeClient = {
-    addAlgoliaAgent: function() {},
-    initIndex: function() {
+    addAlgoliaAgent: function addAlgoliaAgent() {},
+    initIndex: function initIndex() {
       return {
-        searchForFacetValues: function() {
+        searchForFacetValues: function searchForFacetValues() {
           lastParameters = arguments;
-          return Promise.resolve({
-          });
+          return Promise.resolve({});
         }
       };
     }
@@ -36,16 +35,15 @@ test('searchForFacetValues should search for facetValues with the current state'
   t.end();
 });
 
-test('searchForFacetValues can override the current search state', function(t) {
+test('searchForFacetValues can override the current search state', function (t) {
   var lastParameters = null;
   var fakeClient = {
-    addAlgoliaAgent: function() {},
-    initIndex: function() {
+    addAlgoliaAgent: function addAlgoliaAgent() {},
+    initIndex: function initIndex() {
       return {
-        searchForFacetValues: function() {
+        searchForFacetValues: function searchForFacetValues() {
           lastParameters = arguments;
-          return Promise.resolve({
-          });
+          return Promise.resolve({});
         }
       };
     }

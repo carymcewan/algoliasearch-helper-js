@@ -37,9 +37,7 @@ var lib = {
 
     var valueAsString = '' + value;
 
-    var facetRefinement = !refinementList[attribute] ?
-      [valueAsString] :
-      refinementList[attribute].concat(valueAsString);
+    var facetRefinement = !refinementList[attribute] ? [valueAsString] : refinementList[attribute].concat(valueAsString);
 
     var mod = {};
 
@@ -63,7 +61,7 @@ var lib = {
 
     var valueAsString = '' + value;
 
-    return lib.clearRefinement(refinementList, function(v, f) {
+    return lib.clearRefinement(refinementList, function (v, f) {
       return attribute === f && valueAsString === v;
     });
   },
@@ -104,16 +102,15 @@ var lib = {
     } else if (isFunction(attribute)) {
       var hasChanged = false;
 
-      var newRefinementList = reduce(refinementList, function(memo, values, key) {
-        var facetList = filter(values, function(value) {
+      var newRefinementList = reduce(refinementList, function (memo, values, key) {
+        var facetList = filter(values, function (value) {
           return !attribute(value, key, refinementType);
         });
 
         if (!isEmpty(facetList)) {
           if (facetList.length !== values.length) hasChanged = true;
           memo[key] = facetList;
-        }
-        else hasChanged = true;
+        } else hasChanged = true;
 
         return memo;
       }, {});
@@ -134,8 +131,7 @@ var lib = {
   isRefined: function isRefined(refinementList, attribute, refinementValue) {
     var indexOf = require('lodash/indexOf');
 
-    var containsRefinements = !!refinementList[attribute] &&
-      refinementList[attribute].length > 0;
+    var containsRefinements = !!refinementList[attribute] && refinementList[attribute].length > 0;
 
     if (isUndefined(refinementValue) || !containsRefinements) {
       return containsRefinements;

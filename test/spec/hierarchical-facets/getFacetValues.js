@@ -3,10 +3,10 @@
 var test = require('tape');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('hierarchical facets: getFacetValues', function(t) {
+test('hierarchical facets: getFacetValues', function (t) {
   var algoliasearchHelper = require('../../../');
   var SearchResults = require('../../../src/SearchResults');
 
@@ -19,45 +19,43 @@ test('hierarchical facets: getFacetValues', function(t) {
     }]
   });
 
-  helper
-    .toggleRefine('categories', 'beers | IPA')
-    .setQuery('a');
+  helper.toggleRefine('categories', 'beers | IPA').setQuery('a');
 
   var algoliaResponse = {
     'results': [{
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}, {'objectID': 'two'}],
+      'hits': [{ 'objectID': 'one' }, { 'objectID': 'two' }],
       'nbHits': 2,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 20,
       'facets': {
-        'categories.lvl0': {'beers': 2},
-        'categories.lvl1': {'beers | IPA': 2}
+        'categories.lvl0': { 'beers': 2 },
+        'categories.lvl1': { 'beers | IPA': 2 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 3},
-        'categories.lvl1': {'beers | IPA': 2, 'beers | Belgian': 1}
+        'categories.lvl0': { 'beers': 3 },
+        'categories.lvl1': { 'beers | IPA': 2, 'beers | Belgian': 1 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 3}
+        'categories.lvl0': { 'beers': 3 }
       }
     }]
   };
@@ -67,41 +65,32 @@ test('hierarchical facets: getFacetValues', function(t) {
     'count': null,
     'isRefined': true,
     'path': null,
-    'data': [
-      {
-        'name': 'beers',
-        'path': 'beers',
-        'count': 3,
+    'data': [{
+      'name': 'beers',
+      'path': 'beers',
+      'count': 3,
+      'isRefined': true,
+      'data': [{
+        'name': 'Belgian',
+        'path': 'beers | Belgian',
+        'count': 1,
+        'isRefined': false,
+        'data': null
+      }, {
+        'name': 'IPA',
+        'path': 'beers | IPA',
+        'count': 2,
         'isRefined': true,
-        'data': [
-          {
-            'name': 'Belgian',
-            'path': 'beers | Belgian',
-            'count': 1,
-            'isRefined': false,
-            'data': null
-          },
-          {
-            'name': 'IPA',
-            'path': 'beers | IPA',
-            'count': 2,
-            'isRefined': true,
-            'data': null
-          }
-        ]
-      }
-    ]
+        'data': null
+      }]
+    }]
   };
 
   var results = new SearchResults(helper.state, algoliaResponse.results);
 
-  t.deepEqual(
-    results.getFacetValues('categories', {sortBy: ['name:asc']}),
-    expectedHelperResponseNameASC,
-    'Hierarchical facet values should be sorted as per the predicate');
-  t.deepEqual(
-    results.getFacetValues('categories', {sortBy: function(a, b) { return a.count - b.count; }}),
-    results.getFacetValues('categories', {sortBy: ['count:asc']}),
-    'Hierarchical faet values should be consistentely sort with string or function predicates');
+  t.deepEqual(results.getFacetValues('categories', { sortBy: ['name:asc'] }), expectedHelperResponseNameASC, 'Hierarchical facet values should be sorted as per the predicate');
+  t.deepEqual(results.getFacetValues('categories', { sortBy: function sortBy(a, b) {
+      return a.count - b.count;
+    } }), results.getFacetValues('categories', { sortBy: ['count:asc'] }), 'Hierarchical faet values should be consistentely sort with string or function predicates');
   t.end();
 });

@@ -2,7 +2,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: custom separator', function(t) {
+test('hierarchical facets: custom separator', function (t) {
   var algoliasearch = require('algoliasearch');
   var sinon = require('sinon');
 
@@ -29,37 +29,37 @@ test('hierarchical facets: custom separator', function(t) {
     'results': [{
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}, {'objectID': 'two'}],
+      'hits': [{ 'objectID': 'one' }, { 'objectID': 'two' }],
       'nbHits': 2,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 20,
       'facets': {
-        'categories.lvl0': {'beers': 2},
-        'categories.lvl1': {'beers | IPA': 2}
+        'categories.lvl0': { 'beers': 2 },
+        'categories.lvl1': { 'beers | IPA': 2 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 3},
-        'categories.lvl1': {'beers | IPA': 2, 'beers | Belgian': 1}
+        'categories.lvl0': { 'beers': 3 },
+        'categories.lvl1': { 'beers | IPA': 2, 'beers | Belgian': 1 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 3}
+        'categories.lvl0': { 'beers': 3 }
       }
     }]
   };
@@ -92,33 +92,17 @@ test('hierarchical facets: custom separator', function(t) {
 
   search.yieldsAsync(null, algoliaResponse);
   helper.setQuery('a').search();
-  helper.once('result', function(content) {
+  helper.once('result', function (content) {
     var call = search.getCall(0);
     var queries = call.args[0];
     var hitsQuery = queries[0];
     var parentValuesQuery = queries[1];
 
     t.ok(search.calledOnce, 'client.search was called once');
-    t.deepEqual(
-      hitsQuery.params.facets,
-      ['categories.lvl0', 'categories.lvl1'],
-      'first query (hits) has `categories.lvl0, categories.lvl1` as facets'
-    );
-    t.deepEqual(
-      hitsQuery.params.facetFilters,
-      [['categories.lvl1:beers | IPA']],
-      'first query (hits) has our `categories.lvl1` refinement facet filter'
-    );
-    t.deepEqual(
-      parentValuesQuery.params.facets,
-      ['categories.lvl0', 'categories.lvl1'],
-      'second query (unrefined parent facet values) has `categories.lvl1` as facets'
-    );
-    t.deepEqual(
-      parentValuesQuery.params.facetFilters,
-      [['categories.lvl0:beers']],
-      'second query (unrefined parent facet values) has `categories.lvl0` (parent level) refined'
-    );
+    t.deepEqual(hitsQuery.params.facets, ['categories.lvl0', 'categories.lvl1'], 'first query (hits) has `categories.lvl0, categories.lvl1` as facets');
+    t.deepEqual(hitsQuery.params.facetFilters, [['categories.lvl1:beers | IPA']], 'first query (hits) has our `categories.lvl1` refinement facet filter');
+    t.deepEqual(parentValuesQuery.params.facets, ['categories.lvl0', 'categories.lvl1'], 'second query (unrefined parent facet values) has `categories.lvl1` as facets');
+    t.deepEqual(parentValuesQuery.params.facetFilters, [['categories.lvl0:beers']], 'second query (unrefined parent facet values) has `categories.lvl0` (parent level) refined');
     t.deepEqual(content.hierarchicalFacets, expectedHelperResponse);
     t.end();
   });

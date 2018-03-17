@@ -1,5 +1,7 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var utils = require('../integration-utils.js');
 var setup = utils.setupSimple;
 
@@ -11,44 +13,32 @@ var random = require('lodash/random');
 if (!utils.shouldRun) {
   test = test.skip;
 }
-var indexName = '_travis-algoliasearch-helper-js-' +
-  (process.env.TRAVIS_BUILD_NUMBER || 'DEV') +
-  'helper_searchonce' + random(0, 5000);
+var indexName = '_travis-algoliasearch-helper-js-' + (process.env.TRAVIS_BUILD_NUMBER || 'DEV') + 'helper_searchonce' + random(0, 5000);
 
-var dataset = [
-  {objectID: '1', name: 'TestName'}
-];
+var dataset = [{ objectID: '1', name: 'TestName' }];
 
 var config = {};
 
-test(
-  '[INT][INSIGHTS] search with clickAnalytics should have a queryID',
-  function(t) {
-    setup(indexName, dataset, config).
-    then(function(client) {
-      var helper = algoliasearchHelper(client, indexName, {clickAnalytics: true});
-      helper.on('result', function(content) {
-        t.equal(typeof content.queryID, 'string');
-        t.end();
-      });
-
-      helper.search();
+test('[INT][INSIGHTS] search with clickAnalytics should have a queryID', function (t) {
+  setup(indexName, dataset, config).then(function (client) {
+    var helper = algoliasearchHelper(client, indexName, { clickAnalytics: true });
+    helper.on('result', function (content) {
+      t.equal(_typeof(content.queryID), 'string');
+      t.end();
     });
-  }
-);
 
-test(
-  '[INT][INSIGHTS] search without clickAnalytics should not have a queryID',
-  function(t) {
-    setup(indexName, dataset, config).
-    then(function(client) {
-      var helper = algoliasearchHelper(client, indexName, {});
-      helper.on('result', function(content) {
-        t.equal(content.queryID, undefined);
-        t.end();
-      });
+    helper.search();
+  });
+});
 
-      helper.search();
+test('[INT][INSIGHTS] search without clickAnalytics should not have a queryID', function (t) {
+  setup(indexName, dataset, config).then(function (client) {
+    var helper = algoliasearchHelper(client, indexName, {});
+    helper.on('result', function (content) {
+      t.equal(content.queryID, undefined);
+      t.end();
     });
-  }
-);
+
+    helper.search();
+  });
+});

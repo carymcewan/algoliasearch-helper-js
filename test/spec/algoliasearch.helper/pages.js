@@ -4,10 +4,10 @@ var test = require('tape');
 var algoliasearchHelper = require('../../../index');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('setChange should change the current page', function(t) {
+test('setChange should change the current page', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
 
   t.ok(helper.getCurrentPage() === 0, 'First page should be 0');
@@ -16,7 +16,7 @@ test('setChange should change the current page', function(t) {
   t.end();
 });
 
-test('nextPage should increment the page by one', function(t) {
+test('nextPage should increment the page by one', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
 
   t.ok(helper.getCurrentPage() === 0, 'First page should be 0');
@@ -27,7 +27,7 @@ test('nextPage should increment the page by one', function(t) {
   t.end();
 });
 
-test('previousPage should decrement the current page by one', function(t) {
+test('previousPage should decrement the current page by one', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
 
   t.ok(helper.getCurrentPage() === 0, 'First page should be 0');
@@ -38,7 +38,7 @@ test('previousPage should decrement the current page by one', function(t) {
   t.end();
 });
 
-test('pages should be reset if the mutation might change the number of pages', function(t) {
+test('pages should be reset if the mutation might change the number of pages', function (t) {
   var bind = require('lodash/bind');
 
   var helper = algoliasearchHelper(fakeClient, '', {

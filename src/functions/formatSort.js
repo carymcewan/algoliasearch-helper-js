@@ -13,7 +13,7 @@ module.exports = function formatSort(sortBy, defaults) {
   return reduce(sortBy, function preparePredicate(out, sortInstruction) {
     var sortInstructions = sortInstruction.split(':');
     if (defaults && sortInstructions.length === 1) {
-      var similarDefault = find(defaults, function(predicate) {
+      var similarDefault = find(defaults, function (predicate) {
         return startsWith(predicate, sortInstruction[0]);
       });
       if (similarDefault) {

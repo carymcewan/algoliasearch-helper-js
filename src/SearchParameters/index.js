@@ -37,7 +37,7 @@ var RefinementList = require('./RefinementList');
  * @return {any} the searched value or undefined
  */
 function findArray(array, searchedValue) {
-  return find(array, function(currentValue) {
+  return find(array, function (currentValue) {
     return isEqual(currentValue, searchedValue);
   });
 }
@@ -237,7 +237,6 @@ function SearchParameters(newParameters) {
    * @member {string}
    */
   this.optionalFacetFilters = params.optionalFacetFilters;
-
 
   // Misc. parameters
   /**
@@ -485,27 +484,15 @@ SearchParameters.PARAMETERS = keys(new SearchParameters());
  * @param {object} partialState full or part of a state
  * @return {object} a new object with the number keys as number
  */
-SearchParameters._parseNumbers = function(partialState) {
+SearchParameters._parseNumbers = function (partialState) {
   // Do not reparse numbers in SearchParameters, they ought to be parsed already
   if (partialState instanceof SearchParameters) return partialState;
 
   var numbers = {};
 
-  var numberKeys = [
-    'aroundPrecision',
-    'aroundRadius',
-    'getRankingInfo',
-    'minWordSizefor2Typos',
-    'minWordSizefor1Typo',
-    'page',
-    'maxValuesPerFacet',
-    'distinct',
-    'minimumAroundRadius',
-    'hitsPerPage',
-    'minProximity'
-  ];
+  var numberKeys = ['aroundPrecision', 'aroundRadius', 'getRankingInfo', 'minWordSizefor2Typos', 'minWordSizefor1Typo', 'page', 'maxValuesPerFacet', 'distinct', 'minimumAroundRadius', 'hitsPerPage', 'minProximity'];
 
-  forEach(numberKeys, function(k) {
+  forEach(numberKeys, function (k) {
     var value = partialState[k];
     if (isString(value)) {
       var parsedValue = parseFloat(value);
@@ -516,8 +503,8 @@ SearchParameters._parseNumbers = function(partialState) {
   // there's two formats of insideBoundingBox, we need to parse
   // the one which is an array of float geo rectangles
   if (Array.isArray(partialState.insideBoundingBox)) {
-    numbers.insideBoundingBox = partialState.insideBoundingBox.map(function(geoRect) {
-      return geoRect.map(function(value) {
+    numbers.insideBoundingBox = partialState.insideBoundingBox.map(function (geoRect) {
+      return geoRect.map(function (value) {
         return parseFloat(value);
       });
     });
@@ -525,12 +512,12 @@ SearchParameters._parseNumbers = function(partialState) {
 
   if (partialState.numericRefinements) {
     var numericRefinements = {};
-    forEach(partialState.numericRefinements, function(operators, attribute) {
+    forEach(partialState.numericRefinements, function (operators, attribute) {
       numericRefinements[attribute] = {};
-      forEach(operators, function(values, operator) {
-        var parsedValues = map(values, function(v) {
+      forEach(operators, function (values, operator) {
+        var parsedValues = map(values, function (v) {
           if (isArray(v)) {
-            return map(v, function(vPrime) {
+            return map(v, function (vPrime) {
               if (isString(vPrime)) {
                 return parseFloat(vPrime);
               }
@@ -559,7 +546,7 @@ SearchParameters._parseNumbers = function(partialState) {
 SearchParameters.make = function makeSearchParameters(newParameters) {
   var instance = new SearchParameters(newParameters);
 
-  forEach(newParameters.hierarchicalFacets, function(facet) {
+  forEach(newParameters.hierarchicalFacets, function (facet) {
     if (facet.rootPath) {
       var currentRefinement = instance.getHierarchicalRefinement(facet.name);
 
@@ -584,33 +571,23 @@ SearchParameters.make = function makeSearchParameters(newParameters) {
  * @param {object|SearchParameters} parameters the new parameters to set
  * @return {Error|null} Error if the modification is invalid, null otherwise
  */
-SearchParameters.validate = function(currentState, parameters) {
+SearchParameters.validate = function (currentState, parameters) {
   var params = parameters || {};
 
   if (currentState.tagFilters && params.tagRefinements && params.tagRefinements.length > 0) {
-    return new Error(
-      '[Tags] Cannot switch from the managed tag API to the advanced API. It is probably ' +
-      'an error, if it is really what you want, you should first clear the tags with clearTags method.');
+    return new Error('[Tags] Cannot switch from the managed tag API to the advanced API. It is probably ' + 'an error, if it is really what you want, you should first clear the tags with clearTags method.');
   }
 
   if (currentState.tagRefinements.length > 0 && params.tagFilters) {
-    return new Error(
-      '[Tags] Cannot switch from the advanced tag API to the managed API. It is probably ' +
-      'an error, if it is not, you should first clear the tags with clearTags method.');
+    return new Error('[Tags] Cannot switch from the advanced tag API to the managed API. It is probably ' + 'an error, if it is not, you should first clear the tags with clearTags method.');
   }
 
   if (currentState.numericFilters && params.numericRefinements && !isEmpty(params.numericRefinements)) {
-    return new Error(
-      "[Numeric filters] Can't switch from the advanced to the managed API. It" +
-      ' is probably an error, if this is really what you want, you have to first' +
-      ' clear the numeric filters.');
+    return new Error("[Numeric filters] Can't switch from the advanced to the managed API. It" + ' is probably an error, if this is really what you want, you have to first' + ' clear the numeric filters.');
   }
 
   if (!isEmpty(currentState.numericRefinements) && params.numericFilters) {
-    return new Error(
-      "[Numeric filters] Can't switch from the managed API to the advanced. It" +
-      ' is probably an error, if this is really what you want, you have to first' +
-      ' clear the numeric filters.');
+    return new Error("[Numeric filters] Can't switch from the managed API to the advanced. It" + ' is probably an error, if this is really what you want, you have to first' + ' clear the numeric filters.');
   }
 
   return null;
@@ -637,11 +614,7 @@ SearchParameters.prototype = {
       disjunctiveFacetsRefinements: clear(this.disjunctiveFacetsRefinements, attribute, 'disjunctiveFacet'),
       hierarchicalFacetsRefinements: clear(this.hierarchicalFacetsRefinements, attribute, 'hierarchicalFacet')
     };
-    if (patch.numericRefinements === this.numericRefinements &&
-        patch.facetsRefinements === this.facetsRefinements &&
-        patch.facetsExcludes === this.facetsExcludes &&
-        patch.disjunctiveFacetsRefinements === this.disjunctiveFacetsRefinements &&
-        patch.hierarchicalFacetsRefinements === this.hierarchicalFacetsRefinements) {
+    if (patch.numericRefinements === this.numericRefinements && patch.facetsRefinements === this.facetsRefinements && patch.facetsExcludes === this.facetsExcludes && patch.disjunctiveFacetsRefinements === this.disjunctiveFacetsRefinements && patch.hierarchicalFacetsRefinements === this.hierarchicalFacetsRefinements) {
       return this;
     }
     return this.setQueryParameters(patch);
@@ -767,7 +740,7 @@ SearchParameters.prototype = {
    * searchparameter.addNumericRefinement('size', '=', 38);
    * searchparameter.addNumericRefinement('size', '=', 40);
    */
-  addNumericRefinement: function(attribute, operator, v) {
+  addNumericRefinement: function addNumericRefinement(attribute, operator, v) {
     var value = valToNumber(v);
 
     if (this.isNumericRefined(attribute, operator, value)) return this;
@@ -794,7 +767,7 @@ SearchParameters.prototype = {
    * @param {string} facetName name of the attribute used for faceting
    * @return {string[]} list of refinements
    */
-  getConjunctiveRefinements: function(facetName) {
+  getConjunctiveRefinements: function getConjunctiveRefinements(facetName) {
     if (!this.isConjunctiveFacet(facetName)) {
       throw new Error(facetName + ' is not defined in the facets attribute of the helper configuration');
     }
@@ -805,11 +778,9 @@ SearchParameters.prototype = {
    * @param {string} facetName name of the attribute used for faceting
    * @return {string[]} list of refinements
    */
-  getDisjunctiveRefinements: function(facetName) {
+  getDisjunctiveRefinements: function getDisjunctiveRefinements(facetName) {
     if (!this.isDisjunctiveFacet(facetName)) {
-      throw new Error(
-        facetName + ' is not defined in the disjunctiveFacets attribute of the helper configuration'
-      );
+      throw new Error(facetName + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
     }
     return this.disjunctiveFacetsRefinements[facetName] || [];
   },
@@ -818,7 +789,7 @@ SearchParameters.prototype = {
    * @param {string} facetName name of the attribute used for faceting
    * @return {string[]} list of refinements
    */
-  getHierarchicalRefinement: function(facetName) {
+  getHierarchicalRefinement: function getHierarchicalRefinement(facetName) {
     // we send an array but we currently do not support multiple
     // hierarchicalRefinements for a hierarchicalFacet
     return this.hierarchicalFacetsRefinements[facetName] || [];
@@ -828,7 +799,7 @@ SearchParameters.prototype = {
    * @param {string} facetName name of the attribute used for faceting
    * @return {string[]} list of refinements
    */
-  getExcludeRefinements: function(facetName) {
+  getExcludeRefinements: function getExcludeRefinements(facetName) {
     if (!this.isConjunctiveFacet(facetName)) {
       throw new Error(facetName + ' is not defined in the facets attribute of the helper configuration');
     }
@@ -843,19 +814,19 @@ SearchParameters.prototype = {
    * @param {number} [number] the value to be removed
    * @return {SearchParameters}
    */
-  removeNumericRefinement: function(attribute, operator, paramValue) {
+  removeNumericRefinement: function removeNumericRefinement(attribute, operator, paramValue) {
     if (paramValue !== undefined) {
       var paramValueAsNumber = valToNumber(paramValue);
       if (!this.isNumericRefined(attribute, operator, paramValueAsNumber)) return this;
       return this.setQueryParameters({
-        numericRefinements: this._clearNumericRefinements(function(value, key) {
+        numericRefinements: this._clearNumericRefinements(function (value, key) {
           return key === attribute && value.op === operator && isEqual(value.val, paramValueAsNumber);
         })
       });
     } else if (operator !== undefined) {
       if (!this.isNumericRefined(attribute, operator)) return this;
       return this.setQueryParameters({
-        numericRefinements: this._clearNumericRefinements(function(value, key) {
+        numericRefinements: this._clearNumericRefinements(function (value, key) {
           return key === attribute && value.op === operator;
         })
       });
@@ -863,7 +834,7 @@ SearchParameters.prototype = {
 
     if (!this.isNumericRefined(attribute)) return this;
     return this.setQueryParameters({
-      numericRefinements: this._clearNumericRefinements(function(value, key) {
+      numericRefinements: this._clearNumericRefinements(function (value, key) {
         return key === attribute;
       })
     });
@@ -873,7 +844,7 @@ SearchParameters.prototype = {
    * @param {string} facetName name of the attribute used for faceting
    * @return {SearchParameters.OperatorList[]} list of refinements
    */
-  getNumericRefinements: function(facetName) {
+  getNumericRefinements: function getNumericRefinements(facetName) {
     return this.numericRefinements[facetName] || {};
   },
   /**
@@ -882,7 +853,7 @@ SearchParameters.prototype = {
    * @param {string} operator applied
    * @return {number} value of the refinement
    */
-  getNumericRefinement: function(attribute, operator) {
+  getNumericRefinement: function getNumericRefinement(attribute, operator) {
     return this.numericRefinements[attribute] && this.numericRefinements[attribute][operator];
   },
   /**
@@ -904,20 +875,19 @@ SearchParameters.prototype = {
       return omit(this.numericRefinements, attribute);
     } else if (isFunction(attribute)) {
       var hasChanged = false;
-      var newNumericRefinements = reduce(this.numericRefinements, function(memo, operators, key) {
+      var newNumericRefinements = reduce(this.numericRefinements, function (memo, operators, key) {
         var operatorList = {};
 
-        forEach(operators, function(values, operator) {
+        forEach(operators, function (values, operator) {
           var outValues = [];
-          forEach(values, function(value) {
-            var predicateResult = attribute({val: value, op: operator}, key, 'numeric');
+          forEach(values, function (value) {
+            var predicateResult = attribute({ val: value, op: operator }, key, 'numeric');
             if (!predicateResult) outValues.push(value);
           });
           if (!isEmpty(outValues)) {
             if (outValues.length !== values.length) hasChanged = true;
             operatorList[operator] = outValues;
-          }
-          else hasChanged = true;
+          } else hasChanged = true;
         });
 
         if (!isEmpty(operatorList)) memo[key] = operatorList;
@@ -971,8 +941,7 @@ SearchParameters.prototype = {
    */
   addHierarchicalFacet: function addHierarchicalFacet(hierarchicalFacet) {
     if (this.isHierarchicalFacet(hierarchicalFacet.name)) {
-      throw new Error(
-        'Cannot declare two hierarchical facets with the same name: `' + hierarchicalFacet.name + '`');
+      throw new Error('Cannot declare two hierarchical facets with the same name: `' + hierarchicalFacet.name + '`');
     }
 
     return this.setQueryParameters({
@@ -1022,15 +991,13 @@ SearchParameters.prototype = {
    */
   addDisjunctiveFacetRefinement: function addDisjunctiveFacetRefinement(facet, value) {
     if (!this.isDisjunctiveFacet(facet)) {
-      throw new Error(
-        facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
+      throw new Error(facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
     }
 
     if (RefinementList.isRefined(this.disjunctiveFacetsRefinements, facet, value)) return this;
 
     return this.setQueryParameters({
-      disjunctiveFacetsRefinements: RefinementList.addRefinement(
-        this.disjunctiveFacetsRefinements, facet, value)
+      disjunctiveFacetsRefinements: RefinementList.addRefinement(this.disjunctiveFacetsRefinements, facet, value)
     });
   },
   /**
@@ -1060,7 +1027,7 @@ SearchParameters.prototype = {
     }
 
     return this.clearRefinements(facet).setQueryParameters({
-      facets: filter(this.facets, function(f) {
+      facets: filter(this.facets, function (f) {
         return f !== facet;
       })
     });
@@ -1078,7 +1045,7 @@ SearchParameters.prototype = {
     }
 
     return this.clearRefinements(facet).setQueryParameters({
-      disjunctiveFacets: filter(this.disjunctiveFacets, function(f) {
+      disjunctiveFacets: filter(this.disjunctiveFacets, function (f) {
         return f !== facet;
       })
     });
@@ -1096,7 +1063,7 @@ SearchParameters.prototype = {
     }
 
     return this.clearRefinements(facet).setQueryParameters({
-      hierarchicalFacets: filter(this.hierarchicalFacets, function(f) {
+      hierarchicalFacets: filter(this.hierarchicalFacets, function (f) {
         return f.name !== facet;
       })
     });
@@ -1146,14 +1113,12 @@ SearchParameters.prototype = {
    */
   removeDisjunctiveFacetRefinement: function removeDisjunctiveFacetRefinement(facet, value) {
     if (!this.isDisjunctiveFacet(facet)) {
-      throw new Error(
-        facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
+      throw new Error(facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
     }
     if (!RefinementList.isRefined(this.disjunctiveFacetsRefinements, facet, value)) return this;
 
     return this.setQueryParameters({
-      disjunctiveFacetsRefinements: RefinementList.removeRefinement(
-        this.disjunctiveFacetsRefinements, facet, value)
+      disjunctiveFacetsRefinements: RefinementList.removeRefinement(this.disjunctiveFacetsRefinements, facet, value)
     });
   },
   /**
@@ -1166,7 +1131,9 @@ SearchParameters.prototype = {
     if (!this.isTagRefined(tag)) return this;
 
     var modification = {
-      tagRefinements: filter(this.tagRefinements, function(t) { return t !== tag; })
+      tagRefinements: filter(this.tagRefinements, function (t) {
+        return t !== tag;
+      })
     };
 
     return this.setQueryParameters(modification);
@@ -1200,8 +1167,7 @@ SearchParameters.prototype = {
       return this.toggleDisjunctiveFacetRefinement(facet, value);
     }
 
-    throw new Error('Cannot refine the undeclared facet ' + facet +
-      '; it should be added to the helper options facets, disjunctiveFacets or hierarchicalFacets');
+    throw new Error('Cannot refine the undeclared facet ' + facet + '; it should be added to the helper options facets, disjunctiveFacets or hierarchicalFacets');
   },
   /**
    * Switch the refinement applied over a facet/value
@@ -1244,13 +1210,11 @@ SearchParameters.prototype = {
    */
   toggleDisjunctiveFacetRefinement: function toggleDisjunctiveFacetRefinement(facet, value) {
     if (!this.isDisjunctiveFacet(facet)) {
-      throw new Error(
-        facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
+      throw new Error(facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
     }
 
     return this.setQueryParameters({
-      disjunctiveFacetsRefinements: RefinementList.toggleRefinement(
-        this.disjunctiveFacetsRefinements, facet, value)
+      disjunctiveFacetsRefinements: RefinementList.toggleRefinement(this.disjunctiveFacetsRefinements, facet, value)
     });
   },
   /**
@@ -1262,25 +1226,22 @@ SearchParameters.prototype = {
    */
   toggleHierarchicalFacetRefinement: function toggleHierarchicalFacetRefinement(facet, value) {
     if (!this.isHierarchicalFacet(facet)) {
-      throw new Error(
-        facet + ' is not defined in the hierarchicalFacets attribute of the helper configuration');
+      throw new Error(facet + ' is not defined in the hierarchicalFacets attribute of the helper configuration');
     }
 
     var separator = this._getHierarchicalFacetSeparator(this.getHierarchicalFacetByName(facet));
 
     var mod = {};
 
-    var upOneOrMultipleLevel = this.hierarchicalFacetsRefinements[facet] !== undefined &&
-      this.hierarchicalFacetsRefinements[facet].length > 0 && (
-      // remove current refinement:
-      // refinement was 'beer > IPA', call is toggleRefine('beer > IPA'), refinement should be `beer`
-      this.hierarchicalFacetsRefinements[facet][0] === value ||
-      // remove a parent refinement of the current refinement:
-      //  - refinement was 'beer > IPA > Flying dog'
-      //  - call is toggleRefine('beer > IPA')
-      //  - refinement should be `beer`
-      this.hierarchicalFacetsRefinements[facet][0].indexOf(value + separator) === 0
-    );
+    var upOneOrMultipleLevel = this.hierarchicalFacetsRefinements[facet] !== undefined && this.hierarchicalFacetsRefinements[facet].length > 0 && (
+    // remove current refinement:
+    // refinement was 'beer > IPA', call is toggleRefine('beer > IPA'), refinement should be `beer`
+    this.hierarchicalFacetsRefinements[facet][0] === value ||
+    // remove a parent refinement of the current refinement:
+    //  - refinement was 'beer > IPA > Flying dog'
+    //  - call is toggleRefine('beer > IPA')
+    //  - refinement should be `beer`
+    this.hierarchicalFacetsRefinements[facet][0].indexOf(value + separator) === 0);
 
     if (upOneOrMultipleLevel) {
       if (value.indexOf(separator) === -1) {
@@ -1305,7 +1266,7 @@ SearchParameters.prototype = {
    * @return {SearchParameter} the new state
    * @throws Error if the facet is not defined or if the facet is refined
    */
-  addHierarchicalFacetRefinement: function(facet, path) {
+  addHierarchicalFacetRefinement: function addHierarchicalFacetRefinement(facet, path) {
     if (this.isHierarchicalFacetRefined(facet)) {
       throw new Error(facet + ' is already refined.');
     }
@@ -1322,7 +1283,7 @@ SearchParameters.prototype = {
    * @return {SearchParameter} the new state
    * @throws Error if the facet is not defined or if the facet is not refined
    */
-  removeHierarchicalFacetRefinement: function(facet) {
+  removeHierarchicalFacetRefinement: function removeHierarchicalFacetRefinement(facet) {
     if (!this.isHierarchicalFacetRefined(facet)) {
       throw new Error(facet + ' is not refined.');
     }
@@ -1351,7 +1312,7 @@ SearchParameters.prototype = {
    * @param {string} facet facet name to test
    * @return {boolean}
    */
-  isDisjunctiveFacet: function(facet) {
+  isDisjunctiveFacet: function isDisjunctiveFacet(facet) {
     return indexOf(this.disjunctiveFacets, facet) > -1;
   },
   /**
@@ -1360,7 +1321,7 @@ SearchParameters.prototype = {
    * @param {string} facetName facet name to test
    * @return {boolean}
    */
-  isHierarchicalFacet: function(facetName) {
+  isHierarchicalFacet: function isHierarchicalFacet(facetName) {
     return this.getHierarchicalFacetByName(facetName) !== undefined;
   },
   /**
@@ -1369,7 +1330,7 @@ SearchParameters.prototype = {
    * @param {string} facet facet name to test
    * @return {boolean}
    */
-  isConjunctiveFacet: function(facet) {
+  isConjunctiveFacet: function isConjunctiveFacet(facet) {
     return indexOf(this.facets, facet) > -1;
   },
   /**
@@ -1414,8 +1375,7 @@ SearchParameters.prototype = {
    */
   isDisjunctiveFacetRefined: function isDisjunctiveFacetRefined(facet, value) {
     if (!this.isDisjunctiveFacet(facet)) {
-      throw new Error(
-        facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
+      throw new Error(facet + ' is not defined in the disjunctiveFacets attribute of the helper configuration');
     }
     return RefinementList.isRefined(this.disjunctiveFacetsRefinements, facet, value);
   },
@@ -1430,8 +1390,7 @@ SearchParameters.prototype = {
    */
   isHierarchicalFacetRefined: function isHierarchicalFacetRefined(facet, value) {
     if (!this.isHierarchicalFacet(facet)) {
-      throw new Error(
-        facet + ' is not defined in the hierarchicalFacets attribute of the helper configuration');
+      throw new Error(facet + ' is not defined in the hierarchicalFacets attribute of the helper configuration');
     }
 
     var refinements = this.getHierarchicalRefinement(facet);
@@ -1457,17 +1416,14 @@ SearchParameters.prototype = {
       return !!this.numericRefinements[attribute];
     }
 
-    var isOperatorDefined = this.numericRefinements[attribute] &&
-      !isUndefined(this.numericRefinements[attribute][operator]);
+    var isOperatorDefined = this.numericRefinements[attribute] && !isUndefined(this.numericRefinements[attribute][operator]);
 
     if (isUndefined(value) || !isOperatorDefined) {
       return isOperatorDefined;
     }
 
     var parsedValue = valToNumber(value);
-    var isAttributeValueDefined = !isUndefined(
-      findArray(this.numericRefinements[attribute][operator], parsedValue)
-    );
+    var isAttributeValueDefined = !isUndefined(findArray(this.numericRefinements[attribute][operator], parsedValue));
 
     return isOperatorDefined && isAttributeValueDefined;
   },
@@ -1489,14 +1445,9 @@ SearchParameters.prototype = {
    */
   getRefinedDisjunctiveFacets: function getRefinedDisjunctiveFacets() {
     // attributes used for numeric filter can also be disjunctive
-    var disjunctiveNumericRefinedFacets = intersection(
-      keys(this.numericRefinements),
-      this.disjunctiveFacets
-    );
+    var disjunctiveNumericRefinedFacets = intersection(keys(this.numericRefinements), this.disjunctiveFacets);
 
-    return keys(this.disjunctiveFacetsRefinements)
-      .concat(disjunctiveNumericRefinedFacets)
-      .concat(this.getRefinedHierarchicalFacets());
+    return keys(this.disjunctiveFacetsRefinements).concat(disjunctiveNumericRefinedFacets).concat(this.getRefinedHierarchicalFacets());
   },
   /**
    * Returns the list of all disjunctive facets refined
@@ -1507,37 +1458,30 @@ SearchParameters.prototype = {
    */
   getRefinedHierarchicalFacets: function getRefinedHierarchicalFacets() {
     return intersection(
-      // enforce the order between the two arrays,
-      // so that refinement name index === hierarchical facet index
-      map(this.hierarchicalFacets, 'name'),
-      keys(this.hierarchicalFacetsRefinements)
-    );
+    // enforce the order between the two arrays,
+    // so that refinement name index === hierarchical facet index
+    map(this.hierarchicalFacets, 'name'), keys(this.hierarchicalFacetsRefinements));
   },
   /**
    * Returned the list of all disjunctive facets not refined
    * @method
    * @return {string[]}
    */
-  getUnrefinedDisjunctiveFacets: function() {
+  getUnrefinedDisjunctiveFacets: function getUnrefinedDisjunctiveFacets() {
     var refinedFacets = this.getRefinedDisjunctiveFacets();
 
-    return filter(this.disjunctiveFacets, function(f) {
+    return filter(this.disjunctiveFacets, function (f) {
       return indexOf(refinedFacets, f) === -1;
     });
   },
 
-  managedParameters: [
-    'index',
-    'facets', 'disjunctiveFacets', 'facetsRefinements',
-    'facetsExcludes', 'disjunctiveFacetsRefinements',
-    'numericRefinements', 'tagRefinements', 'hierarchicalFacets', 'hierarchicalFacetsRefinements'
-  ],
+  managedParameters: ['index', 'facets', 'disjunctiveFacets', 'facetsRefinements', 'facetsExcludes', 'disjunctiveFacetsRefinements', 'numericRefinements', 'tagRefinements', 'hierarchicalFacets', 'hierarchicalFacetsRefinements'],
   getQueryParams: function getQueryParams() {
     var managedParameters = this.managedParameters;
 
     var queryParams = {};
 
-    forOwn(this, function(paramValue, paramName) {
+    forOwn(this, function (paramValue, paramName) {
       if (indexOf(managedParameters, paramName) === -1 && paramValue !== undefined) {
         queryParams[paramName] = paramValue;
       }
@@ -1552,9 +1496,7 @@ SearchParameters.prototype = {
    */
   getQueryParameter: function getQueryParameter(paramName) {
     if (!this.hasOwnProperty(paramName)) {
-      throw new Error(
-        "Parameter '" + paramName + "' is not an attribute of SearchParameters " +
-        '(http://algolia.github.io/algoliasearch-helper-js/docs/SearchParameters.html)');
+      throw new Error("Parameter '" + paramName + "' is not an attribute of SearchParameters " + '(http://algolia.github.io/algoliasearch-helper-js/docs/SearchParameters.html)');
     }
 
     return this[paramName];
@@ -1598,7 +1540,7 @@ SearchParameters.prototype = {
     return this.mutateMe(function mergeWith(newInstance) {
       var ks = keys(params);
 
-      forEach(ks, function(k) {
+      forEach(ks, function (k) {
         newInstance[k] = parsedParams[k];
       });
 
@@ -1613,7 +1555,7 @@ SearchParameters.prototype = {
    * or attributes of the index with the notation 'attribute:nameOfMyAttribute'
    * @return {object}
    */
-  filter: function(filters) {
+  filter: function filter(filters) {
     return filterState(this, filters);
   },
   /**
@@ -1636,7 +1578,7 @@ SearchParameters.prototype = {
    * @param  {object} hierarchicalFacet
    * @return {string} returns the hierarchicalFacet.separator or `>` as default
    */
-  _getHierarchicalFacetSortBy: function(hierarchicalFacet) {
+  _getHierarchicalFacetSortBy: function _getHierarchicalFacetSortBy(hierarchicalFacet) {
     return hierarchicalFacet.sortBy || ['isRefined:desc', 'name:asc'];
   },
 
@@ -1646,7 +1588,7 @@ SearchParameters.prototype = {
    * @param  {object} hierarchicalFacet
    * @return {string} returns the hierarchicalFacet.separator or `>` as default
    */
-  _getHierarchicalFacetSeparator: function(hierarchicalFacet) {
+  _getHierarchicalFacetSeparator: function _getHierarchicalFacetSeparator(hierarchicalFacet) {
     return hierarchicalFacet.separator || ' > ';
   },
 
@@ -1656,7 +1598,7 @@ SearchParameters.prototype = {
    * @param  {object} hierarchicalFacet
    * @return {string} returns the hierarchicalFacet.rootPath or null as default
    */
-  _getHierarchicalRootPath: function(hierarchicalFacet) {
+  _getHierarchicalRootPath: function _getHierarchicalRootPath(hierarchicalFacet) {
     return hierarchicalFacet.rootPath || null;
   },
 
@@ -1666,7 +1608,7 @@ SearchParameters.prototype = {
    * @param  {object} hierarchicalFacet
    * @return {string} returns the hierarchicalFacet.showParentLevel or true as default
    */
-  _getHierarchicalShowParentLevel: function(hierarchicalFacet) {
+  _getHierarchicalShowParentLevel: function _getHierarchicalShowParentLevel(hierarchicalFacet) {
     if (typeof hierarchicalFacet.showParentLevel === 'boolean') {
       return hierarchicalFacet.showParentLevel;
     }
@@ -1678,11 +1620,8 @@ SearchParameters.prototype = {
    * @param  {string} hierarchicalFacetName
    * @return {object} a hierarchicalFacet
    */
-  getHierarchicalFacetByName: function(hierarchicalFacetName) {
-    return find(
-      this.hierarchicalFacets,
-      {name: hierarchicalFacetName}
-    );
+  getHierarchicalFacetByName: function getHierarchicalFacetByName(hierarchicalFacetName) {
+    return find(this.hierarchicalFacets, { name: hierarchicalFacetName });
   },
 
   /**
@@ -1690,23 +1629,20 @@ SearchParameters.prototype = {
    * @param  {string} facetName Hierarchical facet name
    * @return {array.<string>} the path as an array of string
    */
-  getHierarchicalFacetBreadcrumb: function(facetName) {
+  getHierarchicalFacetBreadcrumb: function getHierarchicalFacetBreadcrumb(facetName) {
     if (!this.isHierarchicalFacet(facetName)) {
-      throw new Error(
-        'Cannot get the breadcrumb of an unknown hierarchical facet: `' + facetName + '`');
+      throw new Error('Cannot get the breadcrumb of an unknown hierarchical facet: `' + facetName + '`');
     }
 
     var refinement = this.getHierarchicalRefinement(facetName)[0];
     if (!refinement) return [];
 
-    var separator = this._getHierarchicalFacetSeparator(
-      this.getHierarchicalFacetByName(facetName)
-    );
+    var separator = this._getHierarchicalFacetSeparator(this.getHierarchicalFacetByName(facetName));
     var path = refinement.split(separator);
     return map(path, trim);
   },
 
-  toString: function() {
+  toString: function toString() {
     return JSON.stringify(this, null, 2);
   }
 };

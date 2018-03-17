@@ -3,7 +3,7 @@
 var test = require('tape');
 var SearchParameters = require('../../../src/SearchParameters');
 
-test('setqueryparameter should update existing parameter', function(t) {
+test('setqueryparameter should update existing parameter', function (t) {
   var sp = new SearchParameters({
     facets: ['facet']
   });
@@ -16,7 +16,7 @@ test('setqueryparameter should update existing parameter', function(t) {
   t.end();
 });
 
-test('setqueryparameter should add non-existing parameter', function(t) {
+test('setqueryparameter should add non-existing parameter', function (t) {
   var sp = new SearchParameters({
     facets: ['facet']
   });
@@ -29,7 +29,7 @@ test('setqueryparameter should add non-existing parameter', function(t) {
   t.end();
 });
 
-test('setQueryParameter should not create a new instance if the update is non effective', function(t) {
+test('setQueryParameter should not create a new instance if the update is non effective', function (t) {
   var sp = new SearchParameters({
     facets: ['facet'],
     maxValuesPerFacet: 10
@@ -43,16 +43,13 @@ test('setQueryParameter should not create a new instance if the update is non ef
   t.end();
 });
 
-test(
-  'setQueryParameter should not throw an error when trying to add an unknown parameter, and actually add it',
-  function(t) {
-    var state0 = new SearchParameters();
+test('setQueryParameter should not throw an error when trying to add an unknown parameter, and actually add it', function (t) {
+  var state0 = new SearchParameters();
 
-    var state1 = state0.setQueryParameter('betaParameter', 'configValue');
-    // manual test that the warnonce message actually display message once
-    state0.setQueryParameter('betaParameter', 'configValue');
-    t.deepEquals(state1.betaParameter, 'configValue');
+  var state1 = state0.setQueryParameter('betaParameter', 'configValue');
+  // manual test that the warnonce message actually display message once
+  state0.setQueryParameter('betaParameter', 'configValue');
+  t.deepEquals(state1.betaParameter, 'configValue');
 
-    t.end();
-  }
-);
+  t.end();
+});

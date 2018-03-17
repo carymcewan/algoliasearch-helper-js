@@ -12,23 +12,20 @@ function setup(indexName, fn) {
   });
   var index = client.initIndex(indexName);
 
-  return index
-    .clearIndex()
-    .then(function(content) {
-      return index.waitTask(content.taskID);
-    })
-    .then(function() {
-      return fn(client, index);
-    });
+  return index.clearIndex().then(function (content) {
+    return index.waitTask(content.taskID);
+  }).then(function () {
+    return fn(client, index);
+  });
 }
 
 function withDatasetAndConfig(indexName, dataset, config) {
-  return setup(indexName, function(client, index) {
-    return index.addObjects(dataset).then(function() {
+  return setup(indexName, function (client, index) {
+    return index.addObjects(dataset).then(function () {
       return index.setSettings(config);
-    }).then(function(content) {
+    }).then(function (content) {
       return index.waitTask(content.taskID);
-    }).then(function() {
+    }).then(function () {
       return client;
     });
   });

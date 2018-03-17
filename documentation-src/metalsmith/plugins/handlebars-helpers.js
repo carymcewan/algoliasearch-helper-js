@@ -1,26 +1,27 @@
 'use strict';
+
 var Handlebars = require('handlebars');
 var marked = require('marked');
 marked.setOptions({
   gfm: true
 });
-module.exports = function(requires) {
+module.exports = function (requires) {
   requires.handlebars = Handlebars;
 
-  Handlebars.registerHelper('switch', function(value, options) {
+  Handlebars.registerHelper('switch', function (value, options) {
     this._switch_value_ = value;
     var html = options.fn(this); // Process the body of the switch block
     delete this._switch_value_;
     return html;
   });
 
-  Handlebars.registerHelper('case', function(value, options) {
+  Handlebars.registerHelper('case', function (value, options) {
     if (value === this._switch_value_) {
       return options.fn(this);
     }
   });
 
-  Handlebars.registerHelper('md', function(options) {
+  Handlebars.registerHelper('md', function (options) {
     return new Handlebars.SafeString(marked(options.fn(this)));
   });
 
@@ -41,33 +42,27 @@ module.exports = function(requires) {
     if (union.length > 1) return '(' + union.map(formatGenerics).join('|') + ')';
     return type;
   }
-  Handlebars.registerHelper('type', function(options) {
+  Handlebars.registerHelper('type', function (options) {
     return options.fn(formatGenerics(this));
   });
 
-  Handlebars.registerHelper('event', function(options) {
+  Handlebars.registerHelper('event', function (options) {
     return options.fn(this).split(':')[1];
   });
 
-  Handlebars.registerHelper('codepen', function(hash, height) {
+  Handlebars.registerHelper('codepen', function (hash, height) {
     var h = typeof height === 'number' ? height : 790;
-    var url = '//codepen.io/Algolia/embed/' + hash +
-      '?height=' + h +
-      '&amp;theme-id=light&amp;slug-hash=' + hash +
-      '&amp;default-tab=result&amp;user=Algolia&amp;embed-version=2';
-    var copedenContent = '<iframe id="cp_embed_' + hash +
-      '" src="' + url + '" scrolling="no" frameborder="0" height="' + h +
-      '" allowtransparency="true" allowfullscreen="true" name="CodePen Embed" title="CodePen Embed" class="cp_embed_iframe " style="width: 100%; overflow: hidden;"></iframe>';
+    var url = '//codepen.io/Algolia/embed/' + hash + '?height=' + h + '&amp;theme-id=light&amp;slug-hash=' + hash + '&amp;default-tab=result&amp;user=Algolia&amp;embed-version=2';
+    var copedenContent = '<iframe id="cp_embed_' + hash + '" src="' + url + '" scrolling="no" frameborder="0" height="' + h + '" allowtransparency="true" allowfullscreen="true" name="CodePen Embed" title="CodePen Embed" class="cp_embed_iframe " style="width: 100%; overflow: hidden;"></iframe>';
     var downloadLink = '<a href="http://codepen.io/Algolia/share/zip/' + hash + '/">Download this example.</a>';
     return new Handlebars.SafeString(downloadLink + copedenContent);
   });
 
-  Handlebars.registerHelper('cleanParameters', function(parameters) {
-    if(!parameters) return '';
-    return new Handlebars.SafeString(parameters.map(function(p, k) {
-      if(p.name.indexOf('.') !== -1) return '';
-      if(p.optional) return  `<span class="param param-${k} optional">${p.name}</span>`;
-      else return  `<span class="param param-${k}">${p.name}</span>`;
+  Handlebars.registerHelper('cleanParameters', function (parameters) {
+    if (!parameters) return '';
+    return new Handlebars.SafeString(parameters.map(function (p, k) {
+      if (p.name.indexOf('.') !== -1) return '';
+      if (p.optional) return '<span class="param param-' + k + ' optional">' + p.name + '</span>';else return '<span class="param param-' + k + '">' + p.name + '</span>';
     }).join(''));
   });
 };

@@ -1,18 +1,15 @@
 'use strict';
+
 var parserOpts = {
   headerPattern: /^(\w*)(?:\((.*)\))?\: (.*)$/,
-  headerCorrespondence: [
-    'type',
-    'scope',
-    'subject'
-  ],
+  headerCorrespondence: ['type', 'scope', 'subject'],
   noteKeywords: ['BREAKING CHANGE', 'BREAKING CHANGES'],
   revertPattern: /^revert:\s([\s\S]*?)\s*This reverts commit (\w*)\./,
   revertCorrespondence: ['header', 'hash']
 };
 
 var writerOpts = {
-  transform: function(commit) {
+  transform: function transform(commit) {
     return commit;
   },
   groupBy: 'type',
@@ -20,67 +17,8 @@ var writerOpts = {
   commitsSort: ['scope', 'subject'],
   noteGroupsSort: 'title',
   headerPartial: '{{version}} - {{date}}',
-  mainTemplate: `{{> header}}
-
-{{#each commitGroups}}
-{{#each commits}}
-{{> commit root=@root}}
-{{/each}}
-{{/each}}
-
-{{> footer}}
-`,
-  commitPartial: ` * {{header}}
-
-{{~!-- commit link --}} {{#if @root.linkReferences~}}
-  {{~#if @root.repository}}
-    {{~#if @root.host}}
-      {{~@root.host}}/
-    {{~/if}}
-    {{~#if @root.owner}}
-      {{~@root.owner}}/
-    {{~/if}}
-    {{~@root.repository}}
-  {{~else}}
-    {{~@root.repoUrl}}
-  {{~/if}}/
-  {{~@root.commit}}/{{hash}}
-{{~else}}
-  {{~hash}}
-{{~/if}}
-
-{{~!-- commit references --}}
-{{~#if references~}}
-  , closes
-  {{~#each references}} {{#if @root.linkReferences~}}
-    {{~#if @root.repository}}
-      {{~#if @root.host}}
-        {{~@root.host}}/
-      {{~/if}}
-      {{~#if this.repository}}
-        {{~#if this.owner}}
-          {{~this.owner}}/
-        {{~/if}}
-        {{~this.repository}}
-      {{~else}}
-        {{~#if @root.owner}}
-          {{~@root.owner}}/
-        {{~/if}}
-          {{~@root.repository}}
-        {{~/if}}
-    {{~else}}
-      {{~@root.repoUrl}}
-    {{~/if}}/
-    {{~@root.issue}}/{{this.issue}}
-  {{~else}}
-    {{~#if this.owner}}
-      {{~this.owner}}/
-    {{~/if}}
-    {{~this.repository}}#{{this.issue}}
-  {{~/if}}{{/each}}
-{{~/if}}
-
-`
+  mainTemplate: '{{> header}}\n\n{{#each commitGroups}}\n{{#each commits}}\n{{> commit root=@root}}\n{{/each}}\n{{/each}}\n\n{{> footer}}\n',
+  commitPartial: ' * {{header}}\n\n{{~!-- commit link --}} {{#if @root.linkReferences~}}\n  {{~#if @root.repository}}\n    {{~#if @root.host}}\n      {{~@root.host}}/\n    {{~/if}}\n    {{~#if @root.owner}}\n      {{~@root.owner}}/\n    {{~/if}}\n    {{~@root.repository}}\n  {{~else}}\n    {{~@root.repoUrl}}\n  {{~/if}}/\n  {{~@root.commit}}/{{hash}}\n{{~else}}\n  {{~hash}}\n{{~/if}}\n\n{{~!-- commit references --}}\n{{~#if references~}}\n  , closes\n  {{~#each references}} {{#if @root.linkReferences~}}\n    {{~#if @root.repository}}\n      {{~#if @root.host}}\n        {{~@root.host}}/\n      {{~/if}}\n      {{~#if this.repository}}\n        {{~#if this.owner}}\n          {{~this.owner}}/\n        {{~/if}}\n        {{~this.repository}}\n      {{~else}}\n        {{~#if @root.owner}}\n          {{~@root.owner}}/\n        {{~/if}}\n          {{~@root.repository}}\n        {{~/if}}\n    {{~else}}\n      {{~@root.repoUrl}}\n    {{~/if}}/\n    {{~@root.issue}}/{{this.issue}}\n  {{~else}}\n    {{~#if this.owner}}\n      {{~this.owner}}/\n    {{~/if}}\n    {{~this.repository}}#{{this.issue}}\n  {{~/if}}{{/each}}\n{{~/if}}\n\n'
 };
 
 /*

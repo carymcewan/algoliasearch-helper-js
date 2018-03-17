@@ -4,15 +4,15 @@ var test = require('tape');
 var algoliasearchHelper = require('../../../index');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('addExclude should add an exclusion', function(t) {
+test('addExclude should add an exclusion', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, {
     facets: ['facet']
   });
 
-  helper._search = function() {};
+  helper._search = function () {};
 
   var facetName = 'facet';
   var facetValueToExclude = 'brand';
@@ -25,12 +25,12 @@ test('addExclude should add an exclusion', function(t) {
   t.end();
 });
 
-test('removeExclude should remove an exclusion', function(t) {
+test('removeExclude should remove an exclusion', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, {
     facets: ['facet']
   });
 
-  helper._search = function() {};
+  helper._search = function () {};
 
   var facetName = 'facet';
   var facetValueToExclude = 'brand';
@@ -49,7 +49,7 @@ test('removeExclude should remove an exclusion', function(t) {
   t.end();
 });
 
-test('isExcluded should allow to omit the value', function(t) {
+test('isExcluded should allow to omit the value', function (t) {
   var facetName = 'foo';
   var facetValueToExclude = 'brand';
   var facetValueNotExcluded = 'bar';
@@ -59,24 +59,22 @@ test('isExcluded should allow to omit the value', function(t) {
   });
 
   t.notOk(helper.isExcluded(facetName, facetValueToExclude), 'before, the value to exclude is not excluded');
-  t.notOk(helper.isExcluded(facetName, facetValueNotExcluded),
-          'before, the value to exclude is not excluded');
+  t.notOk(helper.isExcluded(facetName, facetValueNotExcluded), 'before, the value to exclude is not excluded');
   t.notOk(helper.isExcluded(facetName), 'before, no facet for the attribute');
   helper.addExclude(facetName, facetValueToExclude);
   t.ok(helper.isExcluded(facetName, facetValueToExclude), 'after, the value to exclude is excluded');
-  t.notOk(helper.isExcluded(facetName, facetValueNotExcluded),
-          'after, the value not to excluded is not excluded');
+  t.notOk(helper.isExcluded(facetName, facetValueNotExcluded), 'after, the value not to excluded is not excluded');
   t.ok(helper.isExcluded(facetName), 'after, the attribute contains exclusions');
 
   t.end();
 });
 
-test('isExcluded should report exclusion correctly', function(t) {
+test('isExcluded should report exclusion correctly', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, {
     facets: ['facet']
   });
 
-  helper._search = function() {};
+  helper._search = function () {};
 
   var facetName = 'facet';
   var facetValueToExclude = 'brand';

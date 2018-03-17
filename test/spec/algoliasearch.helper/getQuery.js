@@ -4,10 +4,10 @@ var test = require('tape');
 var algoliaSearchHelper = require('../../../index.js');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('getQuery', function(t) {
+test('getQuery', function (t) {
   var helper = algoliaSearchHelper(fakeClient, 'IndexName', {
     disjunctiveFacets: ['df1', 'df2', 'df3'],
     disjunctiveFacetsRefinements: {
@@ -30,12 +30,7 @@ test('getQuery', function(t) {
     ignorePlurals: true,
     facets: ['facet1', 'facet2', 'facet3', 'df1', 'df2', 'df3'],
     tagFilters: '',
-    facetFilters: ['facet1:FACET1-VAL-1',
-      'facet2:FACET2-VAL-1',
-      'facet2:FACET2-VAL2',
-      ['df1:DF1-VAL-1'],
-      ['df2:DF2-VAL-1', 'df2:DF2-VAL-2']
-    ]
+    facetFilters: ['facet1:FACET1-VAL-1', 'facet2:FACET2-VAL-1', 'facet2:FACET2-VAL2', ['df1:DF1-VAL-1'], ['df2:DF2-VAL-1', 'df2:DF2-VAL-2']]
   });
 
   t.end();

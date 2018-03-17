@@ -2,7 +2,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: two hierarchical facets', function(t) {
+test('hierarchical facets: two hierarchical facets', function (t) {
   var algoliasearch = require('algoliasearch');
   var sinon = require('sinon');
 
@@ -32,36 +32,36 @@ test('hierarchical facets: two hierarchical facets', function(t) {
     'results': [{
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 7,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 20,
       'facets': {
-        'beers.lvl0': {'IPA': 2},
-        'fruits.lvl0': {'oranges': 5}
+        'beers.lvl0': { 'IPA': 2 },
+        'fruits.lvl0': { 'oranges': 5 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'beers.lvl0': {'IPA': 2, 'Belgian': 3}
+        'beers.lvl0': { 'IPA': 2, 'Belgian': 3 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'fruits.lvl0': {'oranges': 5, 'apples': 4}
+        'fruits.lvl0': { 'oranges': 5, 'apples': 4 }
       }
     }]
   };
@@ -104,10 +104,9 @@ test('hierarchical facets: two hierarchical facets', function(t) {
     }]
   }];
 
-
   search.yieldsAsync(null, algoliaResponse);
   helper.setQuery('a').search();
-  helper.once('result', function(content) {
+  helper.once('result', function (content) {
     t.deepEqual(content.hierarchicalFacets, expectedHelperResponse);
     t.end();
   });

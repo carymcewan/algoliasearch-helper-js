@@ -8,7 +8,7 @@ var isEmpty = require('lodash/isEmpty');
 var isUndefined = require('lodash/isUndefined');
 
 function fixture() {
-  var helper = algoliasearchHelper({addAlgoliaAgent: function() {}}, 'Index', {
+  var helper = algoliasearchHelper({ addAlgoliaAgent: function addAlgoliaAgent() {} }, 'Index', {
     facets: ['facet1', 'facet2', 'both_facet', 'excluded1', 'excluded2'],
     disjunctiveFacets: ['disjunctiveFacet1', 'disjunctiveFacet2', 'both_facet'],
     hierarchicalFacets: [{
@@ -17,58 +17,45 @@ function fixture() {
     }]
   });
 
-  return helper.toggleRefine('facet1', '0')
-    .toggleRefine('facet2', '0')
-    .toggleRefine('disjunctiveFacet1', '0')
-    .toggleRefine('disjunctiveFacet2', '0')
-    .toggleExclude('excluded1', '0')
-    .toggleExclude('excluded2', '0')
-    .addNumericRefinement('numeric1', '>=', '0')
-    .addNumericRefinement('numeric1', '<', '10')
-    .addNumericRefinement('numeric2', '>=', 0)
-    .addNumericRefinement('numeric2', '<', 10);
+  return helper.toggleRefine('facet1', '0').toggleRefine('facet2', '0').toggleRefine('disjunctiveFacet1', '0').toggleRefine('disjunctiveFacet2', '0').toggleExclude('excluded1', '0').toggleExclude('excluded2', '0').addNumericRefinement('numeric1', '>=', '0').addNumericRefinement('numeric1', '<', '10').addNumericRefinement('numeric2', '>=', 0).addNumericRefinement('numeric2', '<', 10);
 }
 
-test('Check that the state objects match how we test them', function(t) {
+test('Check that the state objects match how we test them', function (t) {
   var helper = fixture();
 
-  t.deepEqual(helper.state.facetsRefinements, {facet1: ['0'], facet2: ['0']});
-  t.deepEqual(
-    helper.state.disjunctiveFacetsRefinements,
-    {disjunctiveFacet1: ['0'], disjunctiveFacet2: ['0']});
-  t.deepEqual(helper.state.facetsExcludes, {excluded1: ['0'], excluded2: ['0']});
-  t.deepEqual(
-    helper.state.numericRefinements,
-    {numeric1: {'>=': [0], '<': [10]}, numeric2: {'>=': [0], '<': [10]}});
+  t.deepEqual(helper.state.facetsRefinements, { facet1: ['0'], facet2: ['0'] });
+  t.deepEqual(helper.state.disjunctiveFacetsRefinements, { disjunctiveFacet1: ['0'], disjunctiveFacet2: ['0'] });
+  t.deepEqual(helper.state.facetsExcludes, { excluded1: ['0'], excluded2: ['0'] });
+  t.deepEqual(helper.state.numericRefinements, { numeric1: { '>=': [0], '<': [10] }, numeric2: { '>=': [0], '<': [10] } });
 
   t.end();
 });
 
-test('Clear with a name should work on every type and not remove others than targetted name', function(t) {
+test('Clear with a name should work on every type and not remove others than targetted name', function (t) {
   var helper = fixture();
 
   helper.clearRefinements('facet1');
-  t.deepEqual(helper.state.facetsRefinements, {facet2: ['0']});
+  t.deepEqual(helper.state.facetsRefinements, { facet2: ['0'] });
 
   helper.clearRefinements('disjunctiveFacet1');
-  t.deepEqual(helper.state.disjunctiveFacetsRefinements, {disjunctiveFacet2: ['0']});
+  t.deepEqual(helper.state.disjunctiveFacetsRefinements, { disjunctiveFacet2: ['0'] });
 
   helper.clearRefinements('excluded1');
-  t.deepEqual(helper.state.facetsExcludes, {excluded2: ['0']});
+  t.deepEqual(helper.state.facetsExcludes, { excluded2: ['0'] });
 
   helper.clearRefinements('numeric1');
-  t.deepEqual(helper.state.numericRefinements, {numeric2: {'>=': [0], '<': [10]}});
+  t.deepEqual(helper.state.numericRefinements, { numeric2: { '>=': [0], '<': [10] } });
 
   t.end();
 });
 
-test('Clearing the same field from multiple elements should remove it everywhere', function(t) {
+test('Clearing the same field from multiple elements should remove it everywhere', function (t) {
   var helper = fixture();
 
   helper.addNumericRefinement('facet1', '>=', '10').toggleExclude('facet1', 'value');
 
   t.deepEqual(helper.state.facetsRefinements.facet1, ['0']);
-  t.deepEqual(helper.state.numericRefinements.facet1, {'>=': [10]});
+  t.deepEqual(helper.state.numericRefinements.facet1, { '>=': [10] });
   t.deepEqual(helper.state.facetsExcludes.facet1, ['value']);
 
   helper.clearRefinements('facet1');
@@ -79,11 +66,11 @@ test('Clearing the same field from multiple elements should remove it everywhere
   t.end();
 });
 
-test('Clear with a function: neutral predicate', function(t) {
+test('Clear with a function: neutral predicate', function (t) {
   var helper = fixture();
   var state0 = helper.state;
 
-  helper.clearRefinements(function() {
+  helper.clearRefinements(function () {
     return false;
   });
 
@@ -95,10 +82,10 @@ test('Clear with a function: neutral predicate', function(t) {
   t.end();
 });
 
-test('Clear with a function: remove all predicate', function(t) {
+test('Clear with a function: remove all predicate', function (t) {
   var helper = fixture();
 
-  helper.clearRefinements(function() {
+  helper.clearRefinements(function () {
     return true;
   });
 
@@ -110,7 +97,7 @@ test('Clear with a function: remove all predicate', function(t) {
   t.end();
 });
 
-test('Clear with a function: filtering', function(t) {
+test('Clear with a function: filtering', function (t) {
   var helper = fixture();
 
   var checkType = {
@@ -120,58 +107,60 @@ test('Clear with a function: filtering', function(t) {
     exclude: false
   };
 
-  helper.clearRefinements(function(value, key, type) {
+  helper.clearRefinements(function (value, key, type) {
     checkType[type] = true;
 
     return key.indexOf('1') !== -1;
   });
 
   t.equal(keys(checkType).length, 4, 'There should be only 4 refinements');
-  forEach(checkType, function(typeTest, type) { t.ok(typeTest, 'clear should go through: ' + type); });
+  forEach(checkType, function (typeTest, type) {
+    t.ok(typeTest, 'clear should go through: ' + type);
+  });
 
-  t.deepEqual(helper.state.facetsRefinements, {facet2: ['0']});
-  t.deepEqual(helper.state.disjunctiveFacetsRefinements, {disjunctiveFacet2: ['0']});
-  t.deepEqual(helper.state.facetsExcludes, {excluded2: ['0']});
-  t.deepEqual(helper.state.numericRefinements, {numeric2: {'>=': [0], '<': [10]}});
+  t.deepEqual(helper.state.facetsRefinements, { facet2: ['0'] });
+  t.deepEqual(helper.state.disjunctiveFacetsRefinements, { disjunctiveFacet2: ['0'] });
+  t.deepEqual(helper.state.facetsExcludes, { excluded2: ['0'] });
+  t.deepEqual(helper.state.numericRefinements, { numeric2: { '>=': [0], '<': [10] } });
 
   t.end();
 });
 
-test('Clearing twice the same attribute should be not problem', function(t) {
+test('Clearing twice the same attribute should be not problem', function (t) {
   var helper = fixture();
 
   t.deepEqual(helper.state.facetsRefinements.facet1, ['0']);
   helper.clearRefinements('facet1');
   t.assert(isUndefined(helper.state.facetsRefinements.facet1));
-  t.doesNotThrow(function() {
+  t.doesNotThrow(function () {
     helper.clearRefinements('facet1');
   });
 
   t.deepEqual(helper.state.disjunctiveFacetsRefinements.disjunctiveFacet1, ['0']);
   helper.clearRefinements('disjunctiveFacet1');
   t.assert(isUndefined(helper.state.disjunctiveFacetsRefinements.disjunctiveFacet1));
-  t.doesNotThrow(function() {
+  t.doesNotThrow(function () {
     helper.clearRefinements('disjunctiveFacet1');
   });
 
   t.deepEqual(helper.state.facetsExcludes.excluded1, ['0']);
   helper.clearRefinements('excluded1');
   t.assert(isUndefined(helper.state.facetsExcludes.excluded1));
-  t.doesNotThrow(function() {
+  t.doesNotThrow(function () {
     helper.clearRefinements('excluded1');
   });
 
-  t.deepEqual(helper.state.numericRefinements.numeric1, {'>=': [0], '<': [10]});
+  t.deepEqual(helper.state.numericRefinements.numeric1, { '>=': [0], '<': [10] });
   helper.clearRefinements('numeric1');
   t.assert(isUndefined(helper.state.numericRefinements.numeric1));
-  t.doesNotThrow(function() {
+  t.doesNotThrow(function () {
     helper.clearRefinements('numeric1');
   });
 
   t.end();
 });
 
-test('Clearing without parameters should clear everything', function(t) {
+test('Clearing without parameters should clear everything', function (t) {
   var helper = fixture();
 
   helper.clearRefinements();
@@ -184,7 +173,7 @@ test('Clearing without parameters should clear everything', function(t) {
   t.end();
 });
 
-test('Clearing with no effect should not update the state', function(t) {
+test('Clearing with no effect should not update the state', function (t) {
   var helper = fixture();
   // Reset the state
   helper.clearRefinements();
@@ -202,7 +191,7 @@ test('Clearing with no effect should not update the state', function(t) {
   t.end();
 });
 
-test('Clearing with no effect should not update the state, if used with an unknown attribute', function(t) {
+test('Clearing with no effect should not update the state, if used with an unknown attribute', function (t) {
   var helper = fixture();
   var initialState = helper.state;
   // This operation should not update the reference to the state

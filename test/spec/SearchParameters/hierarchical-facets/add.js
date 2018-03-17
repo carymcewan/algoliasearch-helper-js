@@ -3,7 +3,7 @@
 var test = require('tape');
 var SearchParameters = require('../../../../src/SearchParameters');
 
-test('Should add a refinement', function(t) {
+test('Should add a refinement', function (t) {
   var state0 = SearchParameters.make({
     hierarchicalFacets: [{
       name: 'categories',
@@ -18,7 +18,7 @@ test('Should add a refinement', function(t) {
   t.end();
 });
 
-test('Should throw if there is already a refinement', function(t) {
+test('Should throw if there is already a refinement', function (t) {
   var state0 = SearchParameters.make({
     hierarchicalFacets: [{
       name: 'categories',
@@ -33,7 +33,7 @@ test('Should throw if there is already a refinement', function(t) {
   t.end();
 });
 
-test('Should throw if the facet is not defined', function(t) {
+test('Should throw if the facet is not defined', function (t) {
   var state0 = SearchParameters.make({});
 
   t.throws(state0.addHierarchicalFacetRefinement.bind(state0, 'categories', 'men'));

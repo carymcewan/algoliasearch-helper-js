@@ -1,15 +1,27 @@
-export default function sidebar(options) {
-  const {headersContainer, sidebarContainer, headerStartLevel} = options;
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = sidebar;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function sidebar(options) {
+  var headersContainer = options.headersContainer,
+      sidebarContainer = options.sidebarContainer,
+      headerStartLevel = options.headerStartLevel;
+
   listenToChanges(options);
 
-  const headers = headersContainer.querySelectorAll('h2, h3');
+  var headers = headersContainer.querySelectorAll('h2, h3');
   //const select = document.createElement('select');
-  const list = document.createElement('ul');
-  const startLevel = headerStartLevel; // we start at h2
+  var list = document.createElement('ul');
+  var startLevel = headerStartLevel; // we start at h2
   list.classList.add('no-mobile');
-  let currentList = list;
-  let currentLevel = startLevel;
-  
+  var currentList = list;
+  var currentLevel = startLevel;
+
   //select.addEventListener('change', e => window.location = e.target.value);
   sidebarContainer.appendChild(list);
   //sidebarContainer.appendChild(select);
@@ -19,19 +31,26 @@ export default function sidebar(options) {
 }
 
 function listenToChanges(originalParameters) {
-  const {headersContainer, sidebarContainer, headerStartLevel} = originalParameters;
-
+  var headersContainer = originalParameters.headersContainer,
+      sidebarContainer = originalParameters.sidebarContainer,
+      headerStartLevel = originalParameters.headerStartLevel;
 }
 
 function sidebarFollowScroll(sidebarContainer) {
-  const {height, navHeight, footerHeight, menuHeight, sidebarTop} = getPositionsKeyElements(sidebarContainer);
-  const positionSidebar = () => {
+  var _getPositionsKeyEleme = getPositionsKeyElements(sidebarContainer),
+      height = _getPositionsKeyEleme.height,
+      navHeight = _getPositionsKeyEleme.navHeight,
+      footerHeight = _getPositionsKeyEleme.footerHeight,
+      menuHeight = _getPositionsKeyEleme.menuHeight,
+      sidebarTop = _getPositionsKeyEleme.sidebarTop;
 
-    const currentScroll = window.pageYOffset;
+  var positionSidebar = function positionSidebar() {
+
+    var currentScroll = window.pageYOffset;
     if (currentScroll > sidebarTop - navHeight) {
-      const fold = height - footerHeight - menuHeight - 50;
+      var fold = height - footerHeight - menuHeight - 50;
       if (currentScroll > fold) {
-        sidebarContainer.style.top = (fold - currentScroll + navHeight) + 'px';
+        sidebarContainer.style.top = fold - currentScroll + navHeight + 'px';
       } else {
         sidebarContainer.style.top = null;
       }
@@ -47,10 +66,10 @@ function sidebarFollowScroll(sidebarContainer) {
 }
 
 function scrollSpy(sidebarContainer, headersContainer) {
-  const headers = [...headersContainer.querySelectorAll('h2, h3')];
+  var headers = [].concat(_toConsumableArray(headersContainer.querySelectorAll('h2, h3')));
 
-  const setActiveSidebarLink = header => {
-    [...sidebarContainer.querySelectorAll('a')].forEach(item => {
+  var setActiveSidebarLink = function setActiveSidebarLink(header) {
+    [].concat(_toConsumableArray(sidebarContainer.querySelectorAll('a'))).forEach(function (item) {
       if (item.getAttribute('href').slice(1) === header.getAttribute('id')) {
         item.classList.add('active');
       } else {
@@ -59,16 +78,20 @@ function scrollSpy(sidebarContainer, headersContainer) {
     });
   };
 
-  const findActiveSidebarLink = () => {
-    const highestVisibleHeaders = headers
-      .map(header => ({element: header, rect: header.getBoundingClientRect()}))
-      .filter(({rect}) => {
-        // top element relative viewport position should be at least 1/3 viewport
-        // and element should be in viewport
-        return rect.top < window.innerHeight / 3 && rect.bottom < window.innerHeight;
-      })
-      // then we take the closest to this position as reference
-      .sort((header1, header2) => Math.abs(header1.rect.top) < Math.abs(header2.rect.top) ? -1 : 1);
+  var findActiveSidebarLink = function findActiveSidebarLink() {
+    var highestVisibleHeaders = headers.map(function (header) {
+      return { element: header, rect: header.getBoundingClientRect() };
+    }).filter(function (_ref) {
+      var rect = _ref.rect;
+
+      // top element relative viewport position should be at least 1/3 viewport
+      // and element should be in viewport
+      return rect.top < window.innerHeight / 3 && rect.bottom < window.innerHeight;
+    })
+    // then we take the closest to this position as reference
+    .sort(function (header1, header2) {
+      return Math.abs(header1.rect.top) < Math.abs(header2.rect.top) ? -1 : 1;
+    });
 
     if (highestVisibleHeaders.length === 0) {
       setActiveSidebarLink(headers[0]);
@@ -88,27 +111,29 @@ function scrollSpy(sidebarContainer, headersContainer) {
 // On the documentation sidebar depending on the
 // clicked item
 function activeLinks(sidebarContainer) {
-  const linksContainer = sidebarContainer.querySelector('ul');
+  var linksContainer = sidebarContainer.querySelector('ul');
 
-  linksContainer.addEventListener('click', e => {
+  linksContainer.addEventListener('click', function (e) {
     if (e.target.tagName === 'A') {
-      [...linksContainer.querySelectorAll('a')].forEach(item => item.classList.remove('active'));
+      [].concat(_toConsumableArray(linksContainer.querySelectorAll('a'))).forEach(function (item) {
+        return item.classList.remove('active');
+      });
       e.target.classList.add('active');
     }
   });
 }
 
 function getPositionsKeyElements(sidebar) {
-  const sidebarBBox = sidebar.getBoundingClientRect();
-  const bodyBBox = document.body.getBoundingClientRect();
-  const sidebarTop = sidebarBBox.top - bodyBBox.top;
-  const footer = document.querySelector('.ac-footer');
-  const navigation = document.querySelector('.ac-nav');
-  const menu = document.querySelector('.sidebar > ul');
-  const height = document.querySelector('html').getBoundingClientRect().height;
-  const navHeight = navigation.offsetHeight;
-  const footerHeight = footer.offsetHeight;
-  const menuHeight = menu.offsetHeight;
+  var sidebarBBox = sidebar.getBoundingClientRect();
+  var bodyBBox = document.body.getBoundingClientRect();
+  var sidebarTop = sidebarBBox.top - bodyBBox.top;
+  var footer = document.querySelector('.ac-footer');
+  var navigation = document.querySelector('.ac-nav');
+  var menu = document.querySelector('.sidebar > ul');
+  var height = document.querySelector('html').getBoundingClientRect().height;
+  var navHeight = navigation.offsetHeight;
+  var footerHeight = footer.offsetHeight;
+  var menuHeight = menu.offsetHeight;
 
-  return {sidebarTop, height, navHeight, footerHeight, menuHeight};
+  return { sidebarTop: sidebarTop, height: height, navHeight: navHeight, footerHeight: footerHeight, menuHeight: menuHeight };
 }

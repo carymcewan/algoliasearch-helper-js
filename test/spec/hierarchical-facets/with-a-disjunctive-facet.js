@@ -2,7 +2,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: combined with a disjunctive facet', function(t) {
+test('hierarchical facets: combined with a disjunctive facet', function (t) {
   var algoliasearch = require('algoliasearch');
   var sinon = require('sinon');
 
@@ -30,11 +30,7 @@ test('hierarchical facets: combined with a disjunctive facet', function(t) {
 
   var disjunctiveFacetsValuesQuery = search.getCall(0).args[0][1];
 
-  t.deepEqual(
-    disjunctiveFacetsValuesQuery.params.facetFilters,
-    [['categories.lvl1:beers > IPA']],
-    'Disjunctive facet values query is done using the current hierarchical refinement'
-  );
+  t.deepEqual(disjunctiveFacetsValuesQuery.params.facetFilters, [['categories.lvl1:beers > IPA']], 'Disjunctive facet values query is done using the current hierarchical refinement');
 
   t.end();
 });

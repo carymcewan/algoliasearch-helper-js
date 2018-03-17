@@ -6,7 +6,7 @@ var test = require('tape');
 // At some point we were badly iterating over the SearchParameters instance and failed when
 // the `length` parameter was given.
 
-test('helper accepts length parameter', function(t) {
+test('helper accepts length parameter', function (t) {
   t.plan(2);
 
   var algoliasearch = require('algoliasearch');

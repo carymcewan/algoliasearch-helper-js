@@ -71,7 +71,7 @@ module.exports = {
    * @param {string} shortKey the shorten attribute
    * @return {string} the decoded attribute, undefined otherwise
    */
-  decode: function(shortKey) {
+  decode: function decode(shortKey) {
     return short2Keys[shortKey];
   },
   /**
@@ -79,7 +79,7 @@ module.exports = {
    * @param {string} key the attribute
    * @return {string} the shorten attribute
    */
-  encode: function(key) {
+  encode: function encode(key) {
     return keys2Short[key];
   }
 };

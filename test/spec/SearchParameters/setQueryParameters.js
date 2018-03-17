@@ -4,7 +4,7 @@ var test = require('tape');
 var forOwn = require('lodash/forOwn');
 var SearchParameters = require('../../../src/SearchParameters');
 
-test('setQueryParameters should return the same instance if the options is falsey', function(t) {
+test('setQueryParameters should return the same instance if the options is falsey', function (t) {
   var originalSP = new SearchParameters({
     facets: ['a', 'b'],
     ignorePlurals: false,
@@ -18,7 +18,7 @@ test('setQueryParameters should return the same instance if the options is false
   t.end();
 });
 
-test('setQueryParameters should be able to mix an actual state with a new set of parameters', function(t) {
+test('setQueryParameters should be able to mix an actual state with a new set of parameters', function (t) {
   var originalSP = new SearchParameters({
     facets: ['a', 'b'],
     ignorePlurals: false,
@@ -40,7 +40,7 @@ test('setQueryParameters should be able to mix an actual state with a new set of
   t.end();
 });
 
-test('setQueryParameters should add unknown properties', function(t) {
+test('setQueryParameters should add unknown properties', function (t) {
   var state0 = new SearchParameters({
     facets: ['a', 'b'],
     ignorePlurals: false,
@@ -54,7 +54,7 @@ test('setQueryParameters should add unknown properties', function(t) {
 
   var state1 = state0.setQueryParameters(params);
 
-  forOwn(params, function(v, k) {
+  forOwn(params, function (v, k) {
     t.deepEquals(state1[k], v);
   });
 

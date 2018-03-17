@@ -10,9 +10,7 @@ if (require.main === module) {
 
   var replayTools = require('../../replayTools.js');
   var Helper = require('../../../src/algoliasearch.helper.js');
-  var HelperSaver = replayTools.toSaver(
-    Helper,
-    path.join(__dirname.replace('datasets', 'spec'), 'getFacetValues'));
+  var HelperSaver = replayTools.toSaver(Helper, path.join(__dirname.replace('datasets', 'spec'), 'getFacetValues'));
   var algoliasearch = require('algoliasearch');
 
   var client = algoliasearch('latency', '6be0576ff61c053d5f9a3225e2a90f76');
@@ -23,16 +21,16 @@ if (require.main === module) {
 
   var initialState = helper.getState();
 
-  helper.searchOnce().then(function() {
+  helper.searchOnce().then(function () {
     helper.__saveLastToFile('noFilters.json');
 
     var otherState = initialState.addDisjunctiveFacetRefinement('brand', 'Apple');
     return helper.searchOnce(otherState);
-  }).then(function() {
+  }).then(function () {
     helper.__saveLastToFile('disjunctive.json');
-  }).then(function() {
+  }).then(function () {
     console.log('Dataset sucessfully generated');
-  }, function(e) {
+  }, function (e) {
     console.error(e);
   });
 }

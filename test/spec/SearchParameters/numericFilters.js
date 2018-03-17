@@ -16,17 +16,17 @@ function testSameValue(t, value) {
   t.deepEqual(state2, state0, 'The final state should be equivalent to the first one');
 }
 
-test('Should be able to add remove strings', function(t) {
+test('Should be able to add remove strings', function (t) {
   testSameValue(t, '40');
   t.end();
 });
 
-test('Should be able to add remove numbers', function(t) {
+test('Should be able to add remove numbers', function (t) {
   testSameValue(t, 40);
   t.end();
 });
 
-test('Should be able to add remove arrays', function(t) {
+test('Should be able to add remove arrays', function (t) {
   testSameValue(t, [40, '30']);
   t.end();
 });

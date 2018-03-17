@@ -4,10 +4,10 @@ var test = require('tape');
 var algoliaSearchHelper = require('../../../index.js');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('getQueryParameter', function(t) {
+test('getQueryParameter', function (t) {
   var bind = require('lodash/bind');
 
   var helper = algoliaSearchHelper(fakeClient, null, {

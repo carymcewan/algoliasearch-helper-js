@@ -4,14 +4,14 @@ var test = require('tape');
 var algoliasearchHelper = require('../../../index');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('setChange should change the current state', function(t) {
+test('setChange should change the current state', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
   var changed = false;
 
-  helper.on('change', function() {
+  helper.on('change', function () {
     changed = true;
   });
 
@@ -24,12 +24,12 @@ test('setChange should change the current state', function(t) {
   t.end();
 });
 
-test('setChange should not change the current state: no real modification', function(t) {
+test('setChange should not change the current state: no real modification', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, null);
   var changed = false;
   var initialState = helper.state;
 
-  helper.on('change', function() {
+  helper.on('change', function () {
     changed = true;
   });
 

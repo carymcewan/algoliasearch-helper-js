@@ -2,7 +2,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: simple usage', function(t) {
+test('hierarchical facets: simple usage', function (t) {
   var algoliasearch = require('algoliasearch');
   var sinon = require('sinon');
 
@@ -42,7 +42,7 @@ test('hierarchical facets: simple usage', function(t) {
       'nbPages': 0,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 20, 'fruits': 5, 'sales': 20}
+        'categories.lvl0': { 'beers': 20, 'fruits': 5, 'sales': 20 }
       }
     }, {
       'query': 'badquery',
@@ -53,7 +53,7 @@ test('hierarchical facets: simple usage', function(t) {
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 20, 'fruits': 5, 'sales': 20}
+        'categories.lvl0': { 'beers': 20, 'fruits': 5, 'sales': 20 }
       }
     }]
   };
@@ -61,8 +61,8 @@ test('hierarchical facets: simple usage', function(t) {
   search.yieldsAsync(null, algoliaResponse);
   helper.setQuery('badquery').search();
 
-  helper.once('result', function(content) {
-    t.deepEqual(content.hierarchicalFacets, [{name: 'categories', count: null, isRefined: true, path: null, data: null}], 'Good facets values');
+  helper.once('result', function (content) {
+    t.deepEqual(content.hierarchicalFacets, [{ name: 'categories', count: null, isRefined: true, path: null, data: null }], 'Good facets values');
     t.end();
   });
 });

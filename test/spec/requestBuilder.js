@@ -5,7 +5,7 @@ var test = require('tape');
 var requestBuilder = require('../../src/requestBuilder.js');
 var getQueries = requestBuilder._getQueries;
 
-test('The request builder should set analytics to subsequent queries', function(t) {
+test('The request builder should set analytics to subsequent queries', function (t) {
   var testData = require('./search.testdata.js')();
   var searchParams = testData.searchParams;
 
@@ -19,7 +19,7 @@ test('The request builder should set analytics to subsequent queries', function(
   t.end();
 });
 
-test('The request builder should set clickAnalytics to subsequent queries', function(t) {
+test('The request builder should set clickAnalytics to subsequent queries', function (t) {
   var testData = require('./search.testdata.js')();
   var searchParams = testData.searchParams;
 
@@ -33,7 +33,7 @@ test('The request builder should set clickAnalytics to subsequent queries', func
   t.end();
 });
 
-test('The request builder should should force analytics to false on subsequent queries if not specified', function(t) {
+test('The request builder should should force analytics to false on subsequent queries if not specified', function (t) {
   var testData = require('./search.testdata.js')();
   var searchParams = testData.searchParams;
 
@@ -45,7 +45,7 @@ test('The request builder should should force analytics to false on subsequent q
   t.end();
 });
 
-test('The request builder should should force clickAnalytics to false on subsequent queries if not specified', function(t) {
+test('The request builder should should force clickAnalytics to false on subsequent queries if not specified', function (t) {
   var testData = require('./search.testdata.js')();
   var searchParams = testData.searchParams;
 
@@ -56,4 +56,3 @@ test('The request builder should should force clickAnalytics to false on subsequ
 
   t.end();
 });
-

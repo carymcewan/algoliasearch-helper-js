@@ -9,10 +9,9 @@ var zuulConfig = module.exports = {
   }],
   html: './test/ie8-polyfill.html',
   scripts: [
-    // browser integration tests will use the dist file, so that we test the
-    // build process also
-    '/dist/algoliasearch.helper.min.js'
-  ],
+  // browser integration tests will use the dist file, so that we test the
+  // build process also
+  '/dist/algoliasearch.helper.min.js'],
 
   // only used when run with saucelabs
   // not activated when dev or phantom
@@ -36,26 +35,8 @@ if (process.env.TRAVIS_BUILD_NUMBER !== undefined) {
 }
 
 var browsers = {
-  all: [
-    {name: 'chrome', version: 'latest', platform: 'Windows 10'},
-    {name: 'firefox', version: 'latest', platform: 'Windows 10'},
-    {name: 'internet explorer', version: '9..11'},
-    {name: 'safari', version: 'latest'},
-    {name: 'iphone', version: 'latest'},
-    {name: 'android', version: 'latest'},
-    {name: 'ipad', version: 'latest'},
-    {name: 'microsoftedge', version: 'latest'}
-  ],
-  pullRequest: [
-    {name: 'chrome', version: 'latest', platform: 'Windows 10'},
-    {name: 'internet explorer', version: ['9', '11']},
-    {name: 'firefox', version: 'latest', platform: 'Windows 10'},
-    {name: 'iphone', version: '9.0'},
-    {name: 'android', version: 'latest'},
-    {name: 'microsoftedge', version: 'latest'}
-  ]
+  all: [{ name: 'chrome', version: 'latest', platform: 'Windows 10' }, { name: 'firefox', version: 'latest', platform: 'Windows 10' }, { name: 'internet explorer', version: '9..11' }, { name: 'safari', version: 'latest' }, { name: 'iphone', version: 'latest' }, { name: 'android', version: 'latest' }, { name: 'ipad', version: 'latest' }, { name: 'microsoftedge', version: 'latest' }],
+  pullRequest: [{ name: 'chrome', version: 'latest', platform: 'Windows 10' }, { name: 'internet explorer', version: ['9', '11'] }, { name: 'firefox', version: 'latest', platform: 'Windows 10' }, { name: 'iphone', version: '9.0' }, { name: 'android', version: 'latest' }, { name: 'microsoftedge', version: 'latest' }]
 };
 
-zuulConfig.browsers = process.env.TRAVIS_PULL_REQUEST && process.env.TRAVIS_PULL_REQUEST !== 'false' ?
-  browsers.pullRequest :
-    browsers.all;
+zuulConfig.browsers = process.env.TRAVIS_PULL_REQUEST && process.env.TRAVIS_PULL_REQUEST !== 'false' ? browsers.pullRequest : browsers.all;

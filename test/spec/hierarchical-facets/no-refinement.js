@@ -2,7 +2,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: no refinement', function(t) {
+test('hierarchical facets: no refinement', function (t) {
   var algoliasearch = require('algoliasearch');
   var sinon = require('sinon');
 
@@ -26,13 +26,13 @@ test('hierarchical facets: no refinement', function(t) {
     'results': [{
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}, {'objectID': 'two'}],
+      'hits': [{ 'objectID': 'one' }, { 'objectID': 'two' }],
       'nbHits': 5,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 20,
       'facets': {
-        'categories.lvl0': {'beers': 2, 'fruits': 3}
+        'categories.lvl0': { 'beers': 2, 'fruits': 3 }
       }
     }]
   };
@@ -59,23 +59,15 @@ test('hierarchical facets: no refinement', function(t) {
 
   search.yieldsAsync(null, algoliaResponse);
   helper.setQuery('a').search();
-  helper.once('result', function(content) {
+  helper.once('result', function (content) {
     var call = search.getCall(0);
     var queries = call.args[0];
     var hitsQuery = queries[0];
 
     t.equal(queries.length, 1, 'we made one query');
     t.ok(search.calledOnce, 'client.search was called once');
-    t.deepEqual(
-      hitsQuery.params.facets,
-      ['categories.lvl0'],
-      'first query (hits) has `categories.lvl0` as facets'
-    );
-    t.equal(
-      hitsQuery.params.facetFilters,
-      undefined,
-      'first query (hits) has no facet refinement refinement'
-    );
+    t.deepEqual(hitsQuery.params.facets, ['categories.lvl0'], 'first query (hits) has `categories.lvl0` as facets');
+    t.equal(hitsQuery.params.facetFilters, undefined, 'first query (hits) has no facet refinement refinement');
     t.deepEqual(content.hierarchicalFacets, expectedHelperResponse);
     t.end();
   });

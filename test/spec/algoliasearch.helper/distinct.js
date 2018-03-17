@@ -7,10 +7,10 @@ var algoliasearchHelper = require('../../../index.js');
 var requestBuilder = require('../../../src/requestBuilder');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('Distinct not set', function(t) {
+test('Distinct not set', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, {
     facets: ['facetConj'],
     disjunctiveFacets: ['facet']
@@ -28,7 +28,7 @@ test('Distinct not set', function(t) {
   t.equal(disjunctiveFacetSearchParam.distinct, undefined, '[disjunctive][query not empty] distinct should be undefined');
   facetSearchParam = requestBuilder._getHitsSearchParams(helper.state);
   t.equal(facetSearchParam.distinct, undefined, '[hits][query not empty] distinct should be undefined');
-  forEach(requestBuilder._getQueries('', helper.state), function(q) {
+  forEach(requestBuilder._getQueries('', helper.state), function (q) {
     t.notOk(q.hasOwnProperty('distinct'), '[hits][query not empty] no distinct should be in the queries by default');
   });
 
@@ -38,7 +38,7 @@ test('Distinct not set', function(t) {
   t.equal(disjunctiveFacetSearchParam.distinct, undefined, '[disjunctive][disjunctive refinement] distinct should be undefined');
   facetSearchParam = requestBuilder._getHitsSearchParams(helper.state);
   t.equal(facetSearchParam.distinct, undefined, '[hits][disjunctive refinement] distinct should be undefined');
-  forEach(requestBuilder._getQueries('', helper.state), function(q) {
+  forEach(requestBuilder._getQueries('', helper.state), function (q) {
     t.notOk(q.hasOwnProperty('distinct'), '[hits][disjunctive refinement] no distinct should be in the queries by default');
   });
 
@@ -48,7 +48,7 @@ test('Distinct not set', function(t) {
   t.equal(disjunctiveFacetSearchParam.distinct, undefined, '[disjunctive][conjunctive refinement] distinct should be undefined');
   facetSearchParam = requestBuilder._getHitsSearchParams(helper.state);
   t.equal(facetSearchParam.distinct, undefined, '[hits][conjunctive refinement] distinct should be undefined');
-  forEach(requestBuilder._getQueries('', helper.state), function(q) {
+  forEach(requestBuilder._getQueries('', helper.state), function (q) {
     t.notOk(q.hasOwnProperty('distinct'), '[disjunctive][conjunctive refinement] no distinct should be in the queries by default');
   });
 
@@ -58,14 +58,14 @@ test('Distinct not set', function(t) {
   t.equal(disjunctiveFacetSearchParam.distinct, undefined, '[disjunctive][numeric refinement] distinct should be undefined');
   facetSearchParam = requestBuilder._getHitsSearchParams(helper.state);
   t.equal(facetSearchParam.distinct, undefined, '[hits][numeric refinement] distinct should be undefined');
-  forEach(requestBuilder._getQueries('', helper.state), function(q) {
+  forEach(requestBuilder._getQueries('', helper.state), function (q) {
     t.notOk(q.hasOwnProperty('distinct'), 'no distinct should be in the queries by default');
   });
 
   t.end();
 });
 
-test('Distinct set to true', function(t) {
+test('Distinct set to true', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, {
     facets: ['facetConj'],
     disjunctiveFacets: ['facet']
@@ -111,7 +111,7 @@ test('Distinct set to true', function(t) {
   t.end();
 });
 
-test('Distinct to false', function(t) {
+test('Distinct to false', function (t) {
   var helper = algoliasearchHelper(fakeClient, null, {
     facets: ['facetConj'],
     disjunctiveFacets: ['facet']
@@ -157,7 +157,7 @@ test('Distinct to false', function(t) {
   t.end();
 });
 
-test('Distinct as a number', function(t) {
+test('Distinct as a number', function (t) {
   var distinctValue = 2;
   var helper = algoliasearchHelper(fakeClient, null, {
     facets: ['facetConj'],

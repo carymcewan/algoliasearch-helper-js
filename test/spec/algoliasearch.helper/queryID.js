@@ -4,14 +4,14 @@ var test = require('tape');
 var algoliasearchHelper = require('../../../index');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('the queryid should keep increasing when new requests arrives', function(t) {
+test('the queryid should keep increasing when new requests arrives', function (t) {
   var initialQueryID;
   var client = {
-    addAlgoliaAgent: function() {},
-    search: function() {
+    addAlgoliaAgent: function addAlgoliaAgent() {},
+    search: function search() {
       initialQueryID++;
     }
   };
@@ -26,14 +26,14 @@ test('the queryid should keep increasing when new requests arrives', function(t)
   t.end();
 });
 
-test('the response handler should check that the query is not outdated', function(t) {
+test('the response handler should check that the query is not outdated', function (t) {
   var testData = require('../search.testdata')();
   var shouldTriggerResult = true;
   var callCount = 0;
 
   var helper = algoliasearchHelper(fakeClient, null, {});
 
-  helper.on('result', function() {
+  helper.on('result', function () {
     callCount++;
 
     if (!shouldTriggerResult) {

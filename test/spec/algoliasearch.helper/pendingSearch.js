@@ -5,24 +5,26 @@ var algoliaSearch = require('algoliasearch');
 
 var algoliasearchHelper = require('../../../index');
 
-test('When searchOnce with callback, hasPendingRequests is true', function(t) {
+test('When searchOnce with callback, hasPendingRequests is true', function (t) {
   var testData = require('../search.testdata')();
   var client = algoliaSearch('dsf', 'dsfdf');
 
   var triggerCb;
-  client.search = function(qs, cb) {
-    triggerCb = function() { cb(null, testData.response); };
+  client.search = function (qs, cb) {
+    triggerCb = function triggerCb() {
+      cb(null, testData.response);
+    };
   };
 
   var helper = algoliasearchHelper(client, 'test_hotels-node');
   var countNoMoreSearch = 0;
-  helper.on('searchQueueEmpty', function() {
+  helper.on('searchQueueEmpty', function () {
     countNoMoreSearch += 1;
   });
 
   t.equal(helper.hasPendingRequests(), false, 'before searchOnce');
 
-  helper.searchOnce(helper.state, function() {
+  helper.searchOnce(helper.state, function () {
     t.equal(helper.hasPendingRequests(), false, 'after searchOnce');
     t.equal(countNoMoreSearch, 1, 'No more search should have been called once after search results');
     t.end();
@@ -34,26 +36,28 @@ test('When searchOnce with callback, hasPendingRequests is true', function(t) {
   triggerCb();
 });
 
-test('When searchOnce with promises, hasPendingRequests is true', function(t) {
+test('When searchOnce with promises, hasPendingRequests is true', function (t) {
   var testData = require('../search.testdata')();
   var client = algoliaSearch('dsf', 'dsfdf');
 
   var triggerCb;
-  client.search = function() {
-    return new Promise(function(done) {
-      triggerCb = function() { done(testData.response); };
+  client.search = function () {
+    return new Promise(function (done) {
+      triggerCb = function triggerCb() {
+        done(testData.response);
+      };
     });
   };
 
   var helper = algoliasearchHelper(client, 'test_hotels-node');
   var countNoMoreSearch = 0;
-  helper.on('searchQueueEmpty', function() {
+  helper.on('searchQueueEmpty', function () {
     countNoMoreSearch += 1;
   });
 
   t.equal(helper.hasPendingRequests(), false, 'before searchOnce');
 
-  helper.searchOnce(helper.state).then(function() {
+  helper.searchOnce(helper.state).then(function () {
     t.equal(helper.hasPendingRequests(), false, 'after searchOnce');
     t.equal(countNoMoreSearch, 1, 'No more search should have been called once after search results');
     t.end();
@@ -65,16 +69,18 @@ test('When searchOnce with promises, hasPendingRequests is true', function(t) {
   triggerCb();
 });
 
-test('When searchForFacetValues, hasPendingRequests is true', function(t) {
+test('When searchForFacetValues, hasPendingRequests is true', function (t) {
   var testData = require('../search.testdata')();
   var client = algoliaSearch('dsf', 'dsfdf');
 
   var triggerCb;
-  client.initIndex = function() {
+  client.initIndex = function () {
     return {
-      searchForFacetValues: function() {
-        return new Promise(function(done) {
-          triggerCb = function() { done(testData.response); };
+      searchForFacetValues: function searchForFacetValues() {
+        return new Promise(function (done) {
+          triggerCb = function triggerCb() {
+            done(testData.response);
+          };
         });
       }
     };
@@ -82,13 +88,13 @@ test('When searchForFacetValues, hasPendingRequests is true', function(t) {
 
   var helper = algoliasearchHelper(client, 'test_hotels-node');
   var countNoMoreSearch = 0;
-  helper.on('searchQueueEmpty', function() {
+  helper.on('searchQueueEmpty', function () {
     countNoMoreSearch += 1;
   });
 
   t.equal(helper.hasPendingRequests(), false, 'before searchForFacetValues');
 
-  helper.searchForFacetValues('').then(function() {
+  helper.searchForFacetValues('').then(function () {
     t.equal(helper.hasPendingRequests(), false, 'after searchForFacetValues');
     t.equal(countNoMoreSearch, 1, 'No more search should have been called once after search results');
     t.end();
@@ -100,24 +106,26 @@ test('When searchForFacetValues, hasPendingRequests is true', function(t) {
   triggerCb();
 });
 
-test('When helper.search(), hasPendingRequests is true', function(t) {
+test('When helper.search(), hasPendingRequests is true', function (t) {
   var testData = require('../search.testdata')();
   var client = algoliaSearch('dsf', 'dsfdf');
 
   var triggerCb;
-  client.search = function(qs, cb) {
-    triggerCb = function() { cb(null, testData.response); };
+  client.search = function (qs, cb) {
+    triggerCb = function triggerCb() {
+      cb(null, testData.response);
+    };
   };
 
   var helper = algoliasearchHelper(client, 'test_hotels-node');
   var countNoMoreSearch = 0;
-  helper.on('searchQueueEmpty', function() {
+  helper.on('searchQueueEmpty', function () {
     countNoMoreSearch += 1;
   });
 
   t.equal(helper.hasPendingRequests(), false, 'before helper.search()');
 
-  helper.on('result', function() {
+  helper.on('result', function () {
     t.equal(helper.hasPendingRequests(), false, 'after helper.search()');
     t.equal(countNoMoreSearch, 1, 'No more search should have been called once after search results');
     t.end();
@@ -131,18 +139,20 @@ test('When helper.search(), hasPendingRequests is true', function(t) {
   triggerCb();
 });
 
-test('When helper.search() and one request is discarded, hasPendingRequests is true unless all come back', function(t) {
+test('When helper.search() and one request is discarded, hasPendingRequests is true unless all come back', function (t) {
   var testData = require('../search.testdata');
   var client = algoliaSearch('dsf', 'dsfdf');
 
   var triggerCbs = [];
-  client.search = function(qs, cb) {
-    triggerCbs.push(function() { cb(null, testData().response); });
+  client.search = function (qs, cb) {
+    triggerCbs.push(function () {
+      cb(null, testData().response);
+    });
   };
 
   var helper = algoliasearchHelper(client, 'test_hotels-node');
   var countNoMoreSearch = 0;
-  helper.on('searchQueueEmpty', function() {
+  helper.on('searchQueueEmpty', function () {
     countNoMoreSearch += 1;
   });
 
@@ -153,7 +163,7 @@ test('When helper.search() and one request is discarded, hasPendingRequests is t
   helper.search();
 
   // intermediary result handler
-  helper.once('result', function() {
+  helper.once('result', function () {
     t.equal(helper.hasPendingRequests(), true, 'second request come back first, but the first is still ongoing');
     t.equal(countNoMoreSearch, 0, 'A search is still pending, which means that it should not have triggered the noMoreSearch event');
   });
@@ -162,12 +172,12 @@ test('When helper.search() and one request is discarded, hasPendingRequests is t
   triggerCbs[1]();
 
   // Final result handler
-  helper.once('result', function() {
+  helper.once('result', function () {
     t.equal(helper.hasPendingRequests(), true, 'second request come back first, but searchOnce is still ongoing');
     t.equal(countNoMoreSearch, 0, 'A search is still pending, which means that it should not have triggered the noMoreSearch event');
   });
 
-  helper.searchOnce({}, function() {
+  helper.searchOnce({}, function () {
     t.equal(helper.hasPendingRequests(), false, 'The last callback triggered is the searchOnce');
     t.equal(countNoMoreSearch, 1, 'This the last query');
   });
@@ -179,7 +189,7 @@ test('When helper.search() and one request is discarded, hasPendingRequests is t
   triggerCbs[0]();
   // this will be ignored and it won't change anything
 
-  setTimeout(function() {
+  setTimeout(function () {
     t.equal(helper.hasPendingRequests(), false, 'after helper.search()');
     t.equal(countNoMoreSearch, 1, 'No more search should have been called once after search results');
     t.end();

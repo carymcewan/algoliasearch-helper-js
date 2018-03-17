@@ -2,7 +2,7 @@
 
 var test = require('tape');
 
-test('hierarchical facets: only one level deep', function(t) {
+test('hierarchical facets: only one level deep', function (t) {
   var algoliasearch = require('algoliasearch');
   var sinon = require('sinon');
 
@@ -28,24 +28,24 @@ test('hierarchical facets: only one level deep', function(t) {
     'results': [{
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}, {'objectID': 'two'}],
+      'hits': [{ 'objectID': 'one' }, { 'objectID': 'two' }],
       'nbHits': 2,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 20,
       'facets': {
-        'categories.lvl0': {'beers': 2}
+        'categories.lvl0': { 'beers': 2 }
       }
     }, {
       'query': 'a',
       'index': indexName,
-      'hits': [{'objectID': 'one'}],
+      'hits': [{ 'objectID': 'one' }],
       'nbHits': 1,
       'page': 0,
       'nbPages': 1,
       'hitsPerPage': 1,
       'facets': {
-        'categories.lvl0': {'beers': 2, 'fruits': 3}
+        'categories.lvl0': { 'beers': 2, 'fruits': 3 }
       }
     }]
   };
@@ -72,7 +72,7 @@ test('hierarchical facets: only one level deep', function(t) {
 
   search.yieldsAsync(null, algoliaResponse);
   helper.setQuery('a').search();
-  helper.once('result', function(content) {
+  helper.once('result', function (content) {
     var call = search.getCall(0);
     var queries = call.args[0];
     var hitsQuery = queries[0];
@@ -80,26 +80,10 @@ test('hierarchical facets: only one level deep', function(t) {
 
     t.equal(queries.length, 2, 'we made two queries');
     t.ok(search.calledOnce, 'client.search was called once');
-    t.deepEqual(
-      hitsQuery.params.facets,
-      ['categories.lvl0'],
-      'first query (hits) has `categories.lvl0` as facets'
-    );
-    t.deepEqual(
-      hitsQuery.params.facetFilters,
-      [['categories.lvl0:beers']],
-      'first query (hits) has our `categories.lvl0` refinement facet filter'
-    );
-    t.deepEqual(
-      parentValuesQuery.params.facets,
-      ['categories.lvl0'],
-      'second query (unrefined parent facet values) has `categories.lvl0` as facets'
-    );
-    t.equal(
-      parentValuesQuery.params.facetFilters,
-      undefined,
-      'second query (unrefined parent facet values) has no facet refinement since we are at the root level'
-    );
+    t.deepEqual(hitsQuery.params.facets, ['categories.lvl0'], 'first query (hits) has `categories.lvl0` as facets');
+    t.deepEqual(hitsQuery.params.facetFilters, [['categories.lvl0:beers']], 'first query (hits) has our `categories.lvl0` refinement facet filter');
+    t.deepEqual(parentValuesQuery.params.facets, ['categories.lvl0'], 'second query (unrefined parent facet values) has `categories.lvl0` as facets');
+    t.equal(parentValuesQuery.params.facetFilters, undefined, 'second query (unrefined parent facet values) has no facet refinement since we are at the root level');
     t.deepEqual(content.hierarchicalFacets, expectedHelperResponse);
     t.end();
   });

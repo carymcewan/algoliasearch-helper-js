@@ -6,29 +6,29 @@ var algoliasearchHelper = require('../../../index');
 var _ = require('lodash');
 
 var fakeClient = {
-  addAlgoliaAgent: function() {}
+  addAlgoliaAgent: function addAlgoliaAgent() {}
 };
 
-test('helper.hasRefinements(attribute)', function(t) {
+test('helper.hasRefinements(attribute)', function (t) {
   var helper;
 
   // cannot be tested since there's no way to know that a numeric refinement
   // was once added then removed thus we always return false when not found
-  t.skip('undefined attribute', function(tt) {
+  t.skip('undefined attribute', function (tt) {
     setup();
     tt.throws(_.partial(helper.hasRefinements, 'unknown'), Error, 'it throws when unknown attribute');
     tt.end();
   });
 
-  t.test('numericRefinement', function(tt) {
-    tt.test('with refinement', function(ttt) {
+  t.test('numericRefinement', function (tt) {
+    tt.test('with refinement', function (ttt) {
       setup();
       helper.addNumericRefinement('price', '=', 1337);
       ttt.equal(helper.hasRefinements('price'), true);
       ttt.end();
     });
 
-    tt.test('without refinement', function(ttt) {
+    tt.test('without refinement', function (ttt) {
       setup();
       helper.addNumericRefinement('price', '=', 1337);
       helper.clearRefinements('price');
@@ -37,8 +37,8 @@ test('helper.hasRefinements(attribute)', function(t) {
     });
   });
 
-  t.test('facet', function(tt) {
-    tt.test('with refinement', function(ttt) {
+  t.test('facet', function (tt) {
+    tt.test('with refinement', function (ttt) {
       setup({
         facets: ['color']
       });
@@ -47,7 +47,7 @@ test('helper.hasRefinements(attribute)', function(t) {
       ttt.end();
     });
 
-    tt.test('without refinement', function(ttt) {
+    tt.test('without refinement', function (ttt) {
       setup({
         facets: ['color']
       });
@@ -56,8 +56,8 @@ test('helper.hasRefinements(attribute)', function(t) {
     });
   });
 
-  t.test('disjunctiveFacet', function(tt) {
-    tt.test('with refinement', function(ttt) {
+  t.test('disjunctiveFacet', function (tt) {
+    tt.test('with refinement', function (ttt) {
       setup({
         disjunctiveFacets: ['author']
       });
@@ -66,7 +66,7 @@ test('helper.hasRefinements(attribute)', function(t) {
       ttt.end();
     });
 
-    tt.test('without refinement', function(ttt) {
+    tt.test('without refinement', function (ttt) {
       setup({
         disjunctiveFacets: ['author']
       });
@@ -75,8 +75,8 @@ test('helper.hasRefinements(attribute)', function(t) {
     });
   });
 
-  t.test('hierarchicalFacet', function(tt) {
-    tt.test('with refinement', function(ttt) {
+  t.test('hierarchicalFacet', function (tt) {
+    tt.test('with refinement', function (ttt) {
       setup({
         hierarchicalFacets: [{
           name: 'category',
@@ -88,7 +88,7 @@ test('helper.hasRefinements(attribute)', function(t) {
       ttt.end();
     });
 
-    tt.test('without refinement', function(ttt) {
+    tt.test('without refinement', function (ttt) {
       setup({
         hierarchicalFacets: [{
           name: 'category',
